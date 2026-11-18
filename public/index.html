@@ -192,6 +192,11 @@
   
   // 显示用户名
   $('user-name').textContent = user.displayName;
+  
+  // 全局消息监听（调试）
+  on('*', msg => {
+    console.log('[WS消息]', msg.type, msg);
+  });
 
   let lobbyRooms = [];
   let roomState = null;
@@ -280,7 +285,10 @@
   };
 
   // ---------- 房间视图 ----------
-  on('joined', () => showView('v-room'));
+  on('joined', m => {
+    console.log('[joined] session.pid 设置为:', m.you);
+    showView('v-room');
+  });
   on('restored', () => showView('v-room'));
 
   on('room', m => {
