@@ -1,14 +1,14 @@
 services:
   - type: web
-    name: tabletop-duo
-    runtime: node
+    name: board-games-online
+    env: node
     plan: starter
-    buildCommand: "echo no build step required"
+    buildCommand: "echo '✅ 零依赖，无需构建'"
     startCommand: "node server.js"
     healthCheckPath: /healthz
     envVars:
+      - key: NODE_ENV
+        value: production
       - key: NODE_VERSION
         value: "20"
-      - key: PORT
-        value: "10000"
     autoDeploy: true
