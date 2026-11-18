@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#1a1205">
+<title>光合作用</title>
+<style>
+  :root{
+    --bg:#120d04; --card:#1e1708; --line:#3d3016; --text:#f7eeda; --dim:#b6a37a;
+    --sun:#fbbf24; --soil4:#facc15; --soil3:#a3e635; --soil2:#4ade80; --soil1:#22c55e;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
+  html,body{height:100%}
+  body{
+    margin:0;color:var(--text);
+    background:radial-gradient(1000px 700px at 70% -10%, rgba(251,191,36,.14), transparent 60%), var(--bg);
+    font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",sans-serif;
+    display:flex;flex-direction:column;min-height:100dvh;
+  }
+  .wrap{flex:1;display:flex;flex-direction:column;padding:10px;gap:8px;max-width:720px;width:100%;margin:0 auto}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px}
+  .row{display:flex;gap:8px;align-items:center}
+  .between{justify-content:space-between}
+  .sub{color:var(--dim);font-size:12px}
+  .hide{display:none!important}
+  button{border:0;border-radius:10px;padding:10px 14px;font-size:14px;font-weight:700;cursor:pointer;background:#3d3016;color:var(--text)}
+  button:active{transform:scale(.97)}
+  button:disabled{opacity:.4}
+  .btn-main{background:linear-gradient(135deg,#fbbf24,#b45309);color:#1a0e00}
+  .btn-ghost{background:transparent;border:1px solid var(--line)}
+
+  #board{width:100%;aspect-ratio:1/1;display:block;touch-action:manipulation}
+
+  .pill{display:inline-flex;align-items:center;gap:5px;background:#2a2109;border:1px solid var(--line);border-radius:99px;padding:4px 10px;font-size:12px}
+  .plist{display:flex;flex-direction:column;gap:6px}
+  .prow{display:flex;justify-content:space-between;align-items:center;font-size:13px;padding:5px 0;border-bottom:1px solid var(--line)}
+  .prow:last-child{border-bottom:0}
+  .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:0}
+  .toast{
+    position:fixed;left:50%;bottom:20px;transform:translateX(-50%) translateY(10px);
+    background:#2a2109;border:1px solid #5a4520;padding:9px 16px;border-radius:10px;
+    font-size:13px;opacity:0;pointer-events:none;transition:.2s;z-index:99;max-width:90vw;text-align:center;
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .supply{display:flex;gap:6px;flex-wrap:wrap}
+  .sbtn{
+    flex:1;min-width:64px;border-radius:10px;padding:8px 6px;text-align:center;
+    background:#2a2109;border:1px solid var(--line);cursor:pointer;font-size:11px;
+  }
+  .sbtn b{display:block;font-size:14px;color:var(--sun)}
+  .sbtn.sel{border-color:var(--sun);box-shadow:0 0 0 2px rgba(251,191,36,.25)}
+  .sbtn .st{color:var(--dim);font-size:10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="card">
+    <div class="row between">
+      <div>
+        <div style="font-weight:800">光合作用</div>
+        <div class="sub">第 <span id="round">0</span>/<span id="total">18</span> 回合 · 第 <span id="rev">1</span>/3 圈</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-weight:800;color:var(--sun)" id="mylight">0 光点</div>
+        <div class="sub" id="mytokens">标记 0 分</div>
+      </div>
+    </div>
+    <div style="height:8px"></div>
+    <div class="row" style="gap:6px;flex-wrap:wrap" id="players"></div>
+  </div>
+
+  <div class="card" style="padding:6px;position:relative">
+    <canvas id="board"></canvas>
+    <div class="pill" style="position:absolute;top:12px;right:12px">
+      <span id="sunlabel">太阳：北</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sub" style="margin-bottom:6px">我的个人板（从下往上买）</div>
+    <div class="supply" id="supply"></div>
+  </div>
+
+  <div class="card">
+    <div class="row" style="margin-bottom:6px">
+      <span class="sub" id="selinfo">点自己的树选中，再点目标格</span>
+    </div>
+    <div class="row">
+      <button class="btn-main" id="btn-grow" style="flex:1" disabled>长大</button>
+      <button class="btn-main" id="btn-plant" style="flex:1" disabled>种种子</button>
+      <button class="btn-main" id="btn-collect" style="flex:1" disabled>采标记(4)</button>
+    </div>
+    <div style="height:8px"></div>
+    <div class="row">
+      <button class="btn-ghost" id="btn-end" style="flex:1">结束我的回合</button>
+    </div>
+  </div>
+
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="shared.js"></script>
+<script>
+(() => {
+  const { $, esc, toast, on, send, session } = App;
+
+  const S = {
+    state: null,
+    sel: null,        // {q,r} 选中的自己的树
+    buySize: null,    // 选中的购买尺寸
+    canvas: null, ctx: null,
+  };
+
+  const SUN_NAMES = ['北', '东北', '东南', '南', '西南', '西北'];
+  // 与引擎 SUN_DIRS 一致
+  const SUN_DIRS = [
+    { q: 0, r: -1 }, { q: 1, r: -1 }, { q: 1, r: 0 },
+    { q: 0, r: 1 }, { q: -1, r: 1 }, { q: -1, r: 0 },
+  ];
+
+  const SIZE_NAME = { 0: '种子', 1: '小树', 2: '中树', 3: '大树' };
+  const COLOR = ['#3b82f6', '#f59e0b', '#10b981', '#ef4444'];
+  const SOIL = { 4: '#facc15', 3: '#a3e635', 2: '#4ade80', 1: '#22c55e' };
+
+  // ---------- 六角几何 ----------
+  function hexCenter(q, r, size, ox, oy) {
+    const x = size * Math.sqrt(3) * (q + r / 2) + ox;
+    const y = size * 1.5 * r + oy;
+    return { x, y };
+  }
+  function hexPoints(cx, cy, size) {
+    const pts = [];
+    for (let i = 0; i < 6; i++) {
+      const a = Math.PI / 180 * (60 * i - 30);
+      pts.push([cx + size * Math.cos(a), cy + size * Math.sin(a)]);
+    }
+    return pts;
+  }
+  function pixelToHex(px, py, size, ox, oy) {
+    // 暴力最近格（19 格，成本可忽略）
+    let best = null, bd = Infinity;
+    for (const st of S.state ? S.state.board : []) {
+      const c = hexCenter(st.q, st.r, size, ox, oy);
+      const d = (c.x - px) ** 2 + (c.y - py) ** 2;
+      if (d < bd) { bd = d; best = st; }
+    }
+    return bd <= (size * 0.92) ** 2 ? best : null;
+  }
+
+  // ---------- 绘制 ----------
+  function draw() {
+    const cv = S.canvas, ctx = S.ctx;
+    const st = S.state;
+    if (!cv || !ctx) return;
+
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const w = cv.clientWidth, h = cv.clientHeight;
+    if (cv.width !== Math.round(w * dpr) || cv.height !== Math.round(h * dpr)) {
+      cv.width = Math.round(w * dpr);
+      cv.height = Math.round(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    ctx.clearRect(0, 0, w, h);
+    if (!st) return;
+
+    const size = Math.min(w, h) / 7.4;
+    const ox = w / 2, oy = h / 2;
+
+    // 光从太阳方向来：画一条方向带
+    const dir = SUN_DIRS[st.sunDir % 6];
+    const dl = Math.hypot(dir.q, dir.r) || 1;
+    const gx = ox + (dir.q / dl) * w * 0.55;
+    const gy = oy + (dir.r / dl) * h * 0.55;
+    const grad = ctx.createLinearGradient(gx, gy, ox, oy);
+    grad.addColorStop(0, 'rgba(251,191,36,.22)');
+    grad.addColorStop(1, 'rgba(251,191,36,0)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, w, h);
+
+    // 太阳图标
+    ctx.beginPath();
+    ctx.arc(gx, gy, size * 0.55, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(251,191,36,.85)';
+    ctx.shadowColor = 'rgba(251,191,36,.9)';
+    ctx.shadowBlur = 24;
+    ctx.fill();
+    ctx.shadowBlur = 0;
+
+    for (const cell of st.board) {
+      const c = hexCenter(cell.q, cell.r, size, ox, oy);
+      const pts = hexPoints(c.x, c.y, size * 0.96);
+
+      ctx.beginPath();
+      pts.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]));
+      ctx.closePath();
+
+      const base = SOIL[cell.leaves] || '#22c55e';
+      ctx.fillStyle = cell.tree ? shade(base, 0.28) : shade(base, 0.13);
+      ctx.fill();
+
+      ctx.lineWidth = 1.2;
+      ctx.strokeStyle = 'rgba(255,255,255,.18)';
+      ctx.stroke();
+
+      // 叶数标记
+      if (!cell.tree) {
+        ctx.fillStyle = 'rgba(255,255,255,.35)';
+        ctx.font = `${Math.round(size * 0.42)}px sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(String(cell.leaves), c.x, c.y);
+      }
+
+      // 树
+      if (cell.tree) {
+        const owner = cell.tree.owner;
+        const col = COLOR[owner % COLOR.length];
+        const sz = cell.tree.size;
+
+        ctx.beginPath();
+        ctx.arc(c.x, c.y, size * (0.16 + sz * 0.13), 0, Math.PI * 2);
+        ctx.fillStyle = col;
+        ctx.shadowColor = col;
+        ctx.shadowBlur = sz === 3 ? 16 : 8;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        ctx.strokeStyle = 'rgba(255,255,255,.7)';
+        ctx.lineWidth = 1.4;
+        ctx.stroke();
+
+        ctx.fillStyle = '#fff';
+        ctx.font = `bold ${Math.round(size * 0.36)}px sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(String(sz), c.x, c.y);
+      }
+
+      // 选中高亮
+      if (S.sel && S.sel.q === cell.q && S.sel.r === cell.r) {
+        ctx.beginPath();
+        pts.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]));
+        ctx.closePath();
+        ctx.strokeStyle = '#fbbf24';
+        ctx.lineWidth = 2.6;
+        ctx.stroke();
+      }
+    }
+  }
+
+  function shade(hex, k) {
+    const n = parseInt(hex.slice(1), 16);
+    const r = Math.round(((n >> 16) & 255) * k);
+    const g = Math.round(((n >> 8) & 255) * k);
+    const b = Math.round((n & 255) * k);
+    return `rgb(${r},${g},${b})`;
+  }
+
+  // ---------- 渲染面板 ----------
+  function render() {
+    const st = S.state;
+    if (!st) return;
+
+    $('round').textContent = st.round;
+    $('total').textContent = st.totalRounds;
+    $('rev').textContent = Math.min(3, Math.floor(st.round / 6) + 1);
+    $('sunlabel').textContent = '太阳：' + SUN_NAMES[st.sunDir % 6];
+
+    const me = st.players[st.you != null ? st.you : 0];
+    const myIdx = me ? me.index : 0;
+    const mine = st.players[myIdx];
+    if (mine) {
+      $('mylight').textContent = mine.light + ' 光点';
+      const tk = (mine.tokens || []).reduce((a, b) => a + b, 0);
+      $('mytokens').textContent = `标记 ${tk} 分（${(mine.tokens || []).length} 枚）`;
+    }
+
+    $('players').innerHTML = st.players.map(p =>
+      `<span class="pill"><i class="dot" style="background:${COLOR[p.index % COLOR.length]}"></i>
+        ${esc(p.name)} · <b style="color:var(--sun)">${p.light}</b> · ${(p.tokens || []).reduce((a,b)=>a+b,0)}分
+        ${st.currentPlayer === p.index ? ' ⏳' : ''}
+      </span>`).join('');
+
+    // 个人板
+    const sizes = [3, 2, 1, 0];
+    $('supply').innerHTML = sizes.map(sz =>
+      `<div class="sbtn ${S.buySize === sz ? 'sel' : ''}" data-size="${sz}">
+        <b>${SIZE_NAME[sz]}</b>
+        <span class="st">库存 ${mine ? mine.supply[sz] : 0} · 花 ${[1,2,3,4][sz]} 点</span>
+      </div>`).join('');
+
+    [...document.querySelectorAll('.sbtn')].forEach(b => {
+      b.onclick = () => {
+        S.buySize = Number(b.dataset.size);
+        render();
+      };
+    });
+
+    updateButtons();
+    draw();
+  }
+
+  function updateButtons() {
+    const st = S.state;
+    if (!st) return;
+    const myTurn = st.currentPlayer === st.you && !st.ended;
+
+    $('btn-grow').disabled = !myTurn || !S.sel;
+    $('btn-plant').disabled = !myTurn || !S.sel;
+    $('btn-collect').disabled = !myTurn || !S.sel;
+    $('btn-end').disabled = !myTurn;
+
+    if (S.sel) {
+      const cell = st.board.find(c => c.q === S.sel.q && c.r === S.sel.r);
+      if (cell && cell.tree) {
+        $('selinfo').textContent = `已选：${SIZE_NAME[cell.tree.size]}（${cell.leaves} 叶土壤）`;
+        $('btn-collect').disabled = !myTurn || cell.tree.size !== 3;
+      }
+    } else {
+      $('selinfo').textContent = myTurn ? '点自己的树选中，再点目标格' : '等对手行动';
+    }
+  }
+
+  // ---------- 点击棋盘 ----------
+  function onBoardClick(ev) {
+    const st = S.state;
+    if (!st) return;
+    const cv = S.canvas;
+    const rect = cv.getBoundingClientRect();
+    const px = (ev.clientX != null ? ev.clientX : ev.touches[0].clientX) - rect.left;
+    const py = (ev.clientY != null ? ev.clientY : ev.touches[0].clientY) - rect.top;
+
+    const size = Math.min(cv.clientWidth, cv.clientHeight) / 7.4;
+    const cell = pixelToHex(px, py, size, cv.clientWidth / 2, cv.clientHeight / 2);
+    if (!cell) return;
+
+    const myTurn = st.currentPlayer === st.you;
+    if (!myTurn) return toast('还没轮到你');
+
+    // 点自己的树 → 选中
+    if (cell.tree && cell.tree.owner === st.you) {
+      S.sel = { q: cell.q, r: cell.r };
+      render();
+      return;
+    }
+
+    // 已选中树，点空格 → 种种子
+    if (S.sel && !cell.tree) {
+      send({ type: 'action', action: {
+        kind: 'plant',
+        fromQ: S.sel.q, fromR: S.sel.r,
+        toQ: cell.q, toR: cell.r,
+      }});
+      S.sel = null;
+      return;
+    }
+
+    // 点别人树/空格，仅切换选中
+    S.sel = null;
+    render();
+  }
+
+  // ---------- 动作 ----------
+  $('btn-grow').onclick = () => {
+    if (!S.sel) return;
+    send({ type: 'action', action: { kind: 'grow', q: S.sel.q, r: S.sel.r } });
+    S.sel = null;
+  };
+  $('btn-plant').onclick = () => toast('先点一个空格作为目标');
+  $('btn-collect').onclick = () => {
+    if (!S.sel) return;
+    send({ type: 'action', action: { kind: 'collect', q: S.sel.q, r: S.sel.r } });
+    S.sel = null;
+  };
+  $('btn-end').onclick = () => send({ type: 'action', action: { kind: 'endTurn' } });
+
+  // 购买：点个人板尺寸
+  document.addEventListener('click', e => {
+    const b = e.target.closest && e.target.closest('.sbtn');
+    if (!b) return;
+    send({ type: 'action', action: { kind: 'buy', size: Number(b.dataset.size) } });
+  });
+
+  // ---------- 消息 ----------
+  on('state', m => {
+    if (m.game !== 'photo') return;
+    S.state = m;
+    if (m.you == null) {
+      const me = m.players.find(p => p.name === App.session.name);
+      m.you = me ? me.index : 0;
+    }
+    render();
+  });
+
+  on('gameover', m => {
+    if (m.game !== 'photo') return;
+    const lines = (m.ranking || []).map(r =>
+      `${r.rank}. ${esc(r.name || ('玩家' + r.player))} — ${r.total} 分`).join('\n');
+    alert('对局结束\n\n' + lines);
+  });
+
+  // 调试出口：便于自动化测试读取内部状态（不影响正常玩法）
+  window.__S = S;
+  window.__dbgPhoto = () => {
+    const st = S.state;
+    if (!st) return null;
+    const myIdx = st.you != null ? st.you : 0;
+    const me = st.players[myIdx];
+    return {
+      sunDir: st.sunDir,
+      round: st.round,
+      currentPlayer: st.currentPlayer,
+      you: myIdx,
+      light: me ? me.light : null,
+      supply: me ? me.supply : null,
+      trees: st.board.filter(c => c.tree).map(c => ({ q: c.q, r: c.r, owner: c.tree.owner, size: c.tree.size, leaves: c.leaves })),
+      myTrees: st.board.filter(c => c.tree && c.tree.owner === myIdx).map(c => ({ q: c.q, r: c.r, size: c.tree.size })),
+      emptyCells: st.board.filter(c => !c.tree).length,
+    };
+  };
+
+  // ---------- 初始化 ----------
+  window.addEventListener('load', () => {
+    S.canvas = $('board');
+    S.ctx = S.canvas.getContext('2d');
+    S.canvas.addEventListener('click', onBoardClick);
+    window.addEventListener('resize', () => draw());
+
+    App.loadSession();
+    if (!App.socket && App.session.code) {
+      App.connect().then(() => {
+        send({ type: 'hello', name: App.session.name, pid: App.session.pid, room: App.session.code });
+      }).catch(() => {});
+    }
+    draw();
+  });
+})();
+</script>
+</body>
+</html>

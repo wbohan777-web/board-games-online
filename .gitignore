@@ -1,0 +1,25 @@
+# 依赖
+node_modules/
+package-lock.json
+
+# 日志
+*.log
+logs/
+
+# 临时文件
+*.tmp
+*.swp
+.DS_Store
+Thumbs.db
+
+# 测试输出
+coverage/
+.nyc_output/
+
+# 开发工具
+.vscode/
+.idea/
+
+# 环境变量
+.env
+.env.local

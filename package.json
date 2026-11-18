@@ -1,0 +1,16 @@
+{
+  "name": "tabletop-duo",
+  "version": "1.0.0",
+  "description": "Forest Shuffle + Photosynthesis online multiplayer (zero dependency)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test-online.js && node test-extraturn.js && node forest-shuffle/test.js && node photosynthesis/test.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": ["forest-shuffle", "photosynthesis", "boardgame", "websocket", "multiplayer"],
+  "license": "MIT",
+  "private": true
+}

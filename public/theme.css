@@ -1,0 +1,342 @@
+/* ========================================
+   双桌游联机平台 - 品牌视觉系统 v2.0
+   ======================================== */
+
+/* ========== 配色系统 ========== */
+:root {
+  /* 基础背景层次 */
+  --bg-deep: #0a0f1a;
+  --bg-main: #0f1623;
+  --bg-elevated: #1a2332;
+  --surface: #162039;
+  --surface-hover: #1e2a47;
+  
+  /* 边框与分割线 */
+  --border-subtle: #1e2a42;
+  --border-normal: #2a3852;
+  --border-strong: #3d4d6e;
+  
+  /* 文字层次 */
+  --text-primary: #f0f4fb;
+  --text-secondary: #a8b5d1;
+  --text-tertiary: #7086ab;
+  --text-disabled: #4a5973;
+  
+  /* 森林主题（绿色系）*/
+  --forest-bg: #06140c;
+  --forest-card: #0d2118;
+  --forest-border: #1d3d2c;
+  --forest-light: #d0f3e1;
+  --forest: #22c55e;
+  --forest-deep: #15803d;
+  --forest-glow: rgba(34, 197, 94, 0.25);
+  
+  /* 阳光主题（金色系）*/
+  --sun-bg: #1a0e00;
+  --sun-card: #2a1a00;
+  --sun-border: #4a3520;
+  --sun-light: #fef3c7;
+  --sun: #f59e0b;
+  --sun-deep: #b45309;
+  --sun-glow: rgba(245, 158, 11, 0.25);
+  
+  /* 功能色 */
+  --success: #10b981;
+  --error: #ef4444;
+  --warning: #f59e0b;
+  --info: #3b82f6;
+  
+  /* 阴影系统 */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.15);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.25);
+  --shadow-xl: 0 12px 48px rgba(0, 0, 0, 0.3);
+  --shadow-glow-forest: 0 0 24px rgba(34, 197, 94, 0.3);
+  --shadow-glow-sun: 0 0 24px rgba(245, 158, 11, 0.3);
+  
+  /* 圆角系统 */
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  
+  /* 动画时长 */
+  --duration-fast: 150ms;
+  --duration-base: 250ms;
+  --duration-slow: 350ms;
+  
+  /* 缓动函数 */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.45, 0, 0.15, 1);
+}
+
+/* ========== 全局重置 ========== */
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  color: var(--text-primary);
+  font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ========== 按钮系统 ========== */
+button {
+  border: 0;
+  border-radius: var(--radius-md);
+  padding: 12px 18px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--duration-base) var(--ease-out);
+  position: relative;
+  overflow: hidden;
+  font-family: inherit;
+}
+
+button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+  opacity: 0;
+  transition: opacity var(--duration-base);
+}
+
+button:hover::before {
+  opacity: 1;
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.btn-main,
+.btn-forest {
+  background: linear-gradient(135deg, var(--forest), var(--forest-deep));
+  color: #04140a;
+  box-shadow: 0 4px 14px rgba(34, 197, 94, 0.3);
+}
+
+.btn-main:hover,
+.btn-forest:hover {
+  box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
+  transform: translateY(-1px);
+}
+
+.btn-photo {
+  background: linear-gradient(135deg, var(--sun), var(--sun-deep));
+  color: #1a0e00;
+  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.3);
+}
+
+.btn-photo:hover {
+  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+  transform: translateY(-1px);
+}
+
+.btn-ghost {
+  background: var(--surface);
+  border: 1.5px solid var(--border-normal);
+  color: var(--text-primary);
+}
+
+.btn-ghost:hover {
+  background: var(--surface-hover);
+  border-color: var(--border-strong);
+}
+
+.btn-warn {
+  background: linear-gradient(135deg, var(--error), #991b1b);
+  color: #fecaca;
+}
+
+/* ========== 卡片系统 ========== */
+.card {
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  box-shadow: var(--shadow-md);
+  backdrop-filter: blur(10px);
+  transition: all var(--duration-base);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+/* ========== 输入框 ========== */
+input[type="text"],
+input[type="number"],
+textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--border-normal);
+  background: var(--surface);
+  color: var(--text-primary);
+  font-size: 15px;
+  font-family: inherit;
+  outline: none;
+  transition: all var(--duration-base);
+}
+
+input::placeholder {
+  color: var(--text-tertiary);
+}
+
+input:hover {
+  border-color: var(--border-strong);
+}
+
+input:focus {
+  border-color: var(--forest);
+  background: var(--bg-elevated);
+  box-shadow: 0 0 0 3px var(--forest-glow);
+}
+
+/* ========== 排版 ========== */
+h1, h2, h3 {
+  margin: 0;
+  line-height: 1.2;
+  letter-spacing: -0.5px;
+}
+
+h1 {
+  font-size: 28px;
+  font-weight: 800;
+}
+
+h2 {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+h3 {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.sub {
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin: 0 0 6px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+/* ========== 布局工具 ========== */
+.row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.between {
+  justify-content: space-between;
+}
+
+.hide {
+  display: none !important;
+}
+
+/* ========== 提示条 ========== */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 32px;
+  transform: translateX(-50%) translateY(16px);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-strong);
+  padding: 12px 22px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  opacity: 0;
+  pointer-events: none;
+  transition: all var(--duration-base);
+  z-index: 999;
+  max-width: 88vw;
+  text-align: center;
+  box-shadow: var(--shadow-xl);
+  backdrop-filter: blur(12px);
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ========== 徽章 ========== */
+.badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 99px;
+  background: var(--surface);
+  border: 1px solid var(--border-normal);
+  letter-spacing: 0.3px;
+  line-height: 1;
+}
+
+/* ========== 点状指示器 ========== */
+.dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 8px;
+  vertical-align: -1px;
+  box-shadow: 0 0 8px currentColor;
+}
+
+/* ========== 响应式 ========== */
+@media (max-width: 400px) {
+  h1 {
+    font-size: 24px;
+  }
+  
+  button {
+    padding: 10px 14px;
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 640px) {
+  h1 {
+    font-size: 32px;
+  }
+  
+  button {
+    padding: 14px 20px;
+    font-size: 16px;
+  }
+  
+  .card {
+    padding: 20px;
+  }
+}

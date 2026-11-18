@@ -1,0 +1,1537 @@
+{
+  "meta": {
+    "source": "lem-solutions/mischwald (Rust), rules cross-checked with BGA Forest Shuffle rules summary",
+    "deckSize": 158,
+    "splitCards": 56,
+    "treeCopies": {
+      "douglasFir": 7,
+      "oak": 7,
+      "horseChestnut": 11,
+      "birch": 10,
+      "silverFir": 6,
+      "linden": 9,
+      "sycamore": 6,
+      "beech": 10
+    },
+    "language": "english-ids"
+  },
+  "cards": {
+    "base": [
+      {
+        "ident": "europeanHare",
+        "deIdent": "Feldhase",
+        "name": "Feldhase",
+        "cost": 0,
+        "types": [
+          "pawedAnimal"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::ProName(1, \"Feldhase\")"
+      },
+      {
+        "ident": "europeanBadger",
+        "deIdent": "Dachs",
+        "name": "Dachs",
+        "cost": 1,
+        "types": [
+          "pawedAnimal"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::EinsKostenlosAblegen(Pfotentier)",
+        "points": "Punkteffekt::Konstant(2)"
+      },
+      {
+        "ident": "bechsteinsBat",
+        "deIdent": "Bechsteinfledermaus",
+        "name": "Bechsteinfledermaus",
+        "cost": 1,
+        "types": [
+          "bat"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::Bedingung("
+      },
+      {
+        "ident": "wolf",
+        "deIdent": "Wolf",
+        "name": "Wolf",
+        "cost": 3,
+        "types": [
+          "pawedAnimal"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::KartenZiehenAnzTyp(Typsymbol::Hirsch)",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Extrazug",
+        "points": "Punkteffekt::ProTyp(5, Hirsch)"
+      },
+      {
+        "ident": "roeDeer",
+        "deIdent": "Reh",
+        "name": "Reh",
+        "cost": 2,
+        "types": [
+          "deer",
+          "clovenHoofedAnimal"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::KartenZiehen(1)",
+        "points": "Punkteffekt::ProBaumsymbole(3, &[Baumsymbol::Buche])"
+      },
+      {
+        "ident": "redDeer",
+        "deIdent": "Rothirsch",
+        "name": "Rothirsch",
+        "cost": 2,
+        "types": [
+          "deer",
+          "clovenHoofedAnimal"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::EinsKostenlosAblegen(Hirsch)",
+        "points": "Punkteffekt::ProTypen(1, &[Baum, Pflanze])"
+      },
+      {
+        "ident": "squeeker",
+        "deIdent": "Frischling",
+        "name": "Frischling",
+        "cost": 0,
+        "types": [
+          "clovenHoofedAnimal"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::Konstant(1)"
+      },
+      {
+        "ident": "violetCarpenterBee",
+        "deIdent": "Holzbiene",
+        "name": "Holzbiene",
+        "cost": 1,
+        "types": [
+          "insect"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::Keiner"
+      },
+      {
+        "ident": "beechMarten",
+        "deIdent": "Steinmarder",
+        "name": "Steinmarder",
+        "cost": 1,
+        "types": [
+          "pawedAnimal"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::KartenZiehen(1)",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::ProVollbelegtemBaum(5)"
+      },
+      {
+        "ident": "wildBoar",
+        "deIdent": "Wildschwein",
+        "name": "Wildschwein",
+        "cost": 2,
+        "types": [
+          "clovenHoofedAnimal"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::Bedingung(10, Bedingung::MinAnzNamen(1, \"Frischling\"))"
+      },
+      {
+        "ident": "redFox",
+        "deIdent": "Fuchs",
+        "name": "Fuchs",
+        "cost": 2,
+        "types": [
+          "pawedAnimal"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::KartenZiehenAnzName(\"Feldhase\")",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::ProName(2, \"Feldhase\")"
+      },
+      {
+        "ident": "lynx",
+        "deIdent": "Luchs",
+        "name": "Luchs",
+        "cost": 1,
+        "types": [
+          "pawedAnimal"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::Bedingung(10, Bedingung::MinAnzNamen(1, \"Reh\"))"
+      },
+      {
+        "ident": "fallowDeer",
+        "deIdent": "Damhirsch",
+        "name": "Damhirsch",
+        "cost": 2,
+        "types": [
+          "deer",
+          "clovenHoofedAnimal"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::KartenZiehen(2)",
+        "points": "Punkteffekt::ProTyp(3, Paarhufer)"
+      },
+      {
+        "ident": "brownLongEaredBat",
+        "deIdent": "BraunesLangohr",
+        "name": "Braunes Langohr",
+        "cost": 1,
+        "types": [
+          "bat"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::Bedingung("
+      },
+      {
+        "ident": "barbastelleBat",
+        "deIdent": "Mopsfledermaus",
+        "name": "Mopsfledermaus",
+        "cost": 1,
+        "types": [
+          "bat"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::Bedingung("
+      },
+      {
+        "ident": "greaterHorseshoeBat",
+        "deIdent": "Hufeisennase",
+        "name": "Hufeisennase",
+        "cost": 1,
+        "types": [
+          "bat"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::Bedingung("
+      },
+      {
+        "ident": "purpleEmperor",
+        "deIdent": "Schillerfalter",
+        "name": "Schillerfalter",
+        "cost": 0,
+        "types": [
+          "butterfly",
+          "insect"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::SammlungTypVersch("
+      },
+      {
+        "ident": "peacockButterfly",
+        "deIdent": "Tagpfauenauge",
+        "name": "Tagpfauenauge",
+        "cost": 0,
+        "types": [
+          "butterfly",
+          "insect"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::SammlungTypVersch("
+      },
+      {
+        "ident": "silverWashedFritillary",
+        "deIdent": "Kaisermantel",
+        "name": "Kaisermantel",
+        "cost": 0,
+        "types": [
+          "butterfly",
+          "insect"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::SammlungTypVersch("
+      },
+      {
+        "ident": "camberwellBeauty",
+        "deIdent": "Trauermantel",
+        "name": "Trauermantel",
+        "cost": 0,
+        "types": [
+          "butterfly",
+          "insect"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::SammlungTypVersch("
+      },
+      {
+        "ident": "chanterelle",
+        "deIdent": "Pfifferling",
+        "name": "Pfifferling",
+        "cost": 2,
+        "types": [
+          "mushroom"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::BeiKarteAusspielenTyp(Baum, Effekt::KartenZiehen(1))",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::Keiner"
+      },
+      {
+        "ident": "treeFrog",
+        "deIdent": "Laubfrosch",
+        "name": "Pfifferling",
+        "cost": 0,
+        "types": [
+          "amphibian"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::ProName(5, \"Stechmücke\")"
+      },
+      {
+        "ident": "mole",
+        "deIdent": "Maulwurf",
+        "name": "Maulwurf",
+        "cost": 2,
+        "types": [
+          "pawedAnimal"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::BeliebigKartenKostenpflichtigSpielen",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::Keiner"
+      },
+      {
+        "ident": "fireSalamander",
+        "deIdent": "Feuersalamander",
+        "name": "Feuersalamander",
+        "cost": 1,
+        "types": [
+          "amphibian"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::EinsKostenlosAblegen(Pfotentier)",
+        "points": "Punkteffekt::SammlungName(&[5, 15, 25])"
+      },
+      {
+        "ident": "blackberries",
+        "deIdent": "Brombeeren",
+        "name": "Brombeeren",
+        "cost": 0,
+        "types": [
+          "plant"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::ProTyp(2, Pflanze)"
+      },
+      {
+        "ident": "moss",
+        "deIdent": "Moos",
+        "name": "Moos",
+        "cost": 0,
+        "types": [
+          "plant"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::Bedingung(10, Bedingung::MinAnzTyp(10, Baum))"
+      },
+      {
+        "ident": "hedgehog",
+        "deIdent": "Igel",
+        "name": "Igel",
+        "cost": 1,
+        "types": [
+          "pawedAnimal"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::KartenZiehen(1)",
+        "points": "Punkteffekt::ProTyp(2, Schmetterling)"
+      },
+      {
+        "ident": "flyAgaric",
+        "deIdent": "Fliegenpilz",
+        "name": "Fliegenpilz",
+        "cost": 2,
+        "types": [
+          "mushroom"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::BeiKarteAusspielenTyp(Pfotentier, Effekt::KartenZiehen(1))",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::Keiner"
+      },
+      {
+        "ident": "bullfinch",
+        "deIdent": "Gimpel",
+        "name": "Gimpel",
+        "cost": 1,
+        "types": [
+          "bird"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::ProTyp(2, Insekt)"
+      },
+      {
+        "ident": "chaffinch",
+        "deIdent": "Buchfink",
+        "name": "Buchfink",
+        "cost": 1,
+        "types": [
+          "bird"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::Bedingung(5, Bedingung::Hauptpflanzenname(\"Buche\"))"
+      },
+      {
+        "ident": "parasolMushroom",
+        "deIdent": "Parasol",
+        "name": "Parasol",
+        "cost": 2,
+        "types": [
+          "mushroom"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::BeiKarteAusspielenPositionTyp(Unten, Baum, Effekt::KartenZiehen(1))",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::Keiner"
+      },
+      {
+        "ident": "greatSpottedWoodpecker",
+        "deIdent": "Buntspecht",
+        "name": "Buntspecht",
+        "cost": 1,
+        "types": [
+          "bird"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::KartenZiehen(1)",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::Bedingung(10, Bedingung::MeisteAnzTyp(Baum))"
+      },
+      {
+        "ident": "woodAnt",
+        "deIdent": "Waldameise",
+        "name": "Waldameise",
+        "cost": 1,
+        "types": [
+          "insect"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::ProKartenAnTypPosition(2, Baum, Kartenposition::Unten)"
+      },
+      {
+        "ident": "treeFerns",
+        "deIdent": "Baumfarn",
+        "name": "Baumfarn",
+        "cost": 1,
+        "types": [
+          "plant"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::KartenZiehen(1)",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::ProTyp(6, Amphibie)"
+      },
+      {
+        "ident": "tawnyOwl",
+        "deIdent": "Waldkauz",
+        "name": "Waldkauz",
+        "cost": 2,
+        "types": [
+          "bird"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::KartenZiehen(1)",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::KartenZiehen(2)",
+        "points": "Punkteffekt::Konstant(5)"
+      },
+      {
+        "ident": "goshawk",
+        "deIdent": "Habicht",
+        "name": "Habicht",
+        "cost": 2,
+        "types": [
+          "bird"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::ProTyp(3, Vogel)"
+      },
+      {
+        "ident": "pennyBun",
+        "deIdent": "Steinpilz",
+        "name": "Steinpilz",
+        "cost": 2,
+        "types": [
+          "mushroom"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::BeiKarteAusspielenPositionTyp(Unten, Baum, Effekt::KartenZiehen(1))",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::Keiner"
+      },
+      {
+        "ident": "wildStrawberries",
+        "deIdent": "Walderdbeeren",
+        "name": "Waldbeeren",
+        "cost": 0,
+        "types": [
+          "plant"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::Bedingung(10, Bedingung::MinAnzTypVerschieden(8, Baum))"
+      },
+      {
+        "ident": "douglasFir",
+        "deIdent": "Douglasie",
+        "name": "Douglasie",
+        "cost": 2,
+        "types": [
+          "tree"
+        ],
+        "isTree": true,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Extrazug",
+        "points": "Punkteffekt::Konstant(5)"
+      },
+      {
+        "ident": "oak",
+        "deIdent": "Eiche",
+        "name": "Eiche",
+        "cost": 2,
+        "types": [
+          "tree"
+        ],
+        "isTree": true,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Extrazug",
+        "points": "Punkteffekt::Bedingung(10, Bedingung::MinAnzTypVerschieden(8, Baum))"
+      },
+      {
+        "ident": "birch",
+        "deIdent": "Birke",
+        "name": "Birke",
+        "cost": 0,
+        "types": [
+          "tree"
+        ],
+        "isTree": true,
+        "immediate": "Effekt::KartenZiehen(1)",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::Konstant(1)"
+      },
+      {
+        "ident": "sycamore",
+        "deIdent": "Ahorn",
+        "name": "Ahorn",
+        "cost": 2,
+        "types": [
+          "tree"
+        ],
+        "isTree": true,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::ProTyp(1, Baum)"
+      },
+      {
+        "ident": "silverFir",
+        "deIdent": "Tanne",
+        "name": "Tanne",
+        "cost": 2,
+        "types": [
+          "tree"
+        ],
+        "isTree": true,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::EinsKostenlosAblegen(Pfotentier)",
+        "points": "Punkteffekt::ProKarteAnHauptpflanze(2)"
+      },
+      {
+        "ident": "linden",
+        "deIdent": "Linde",
+        "name": "Linde",
+        "cost": 1,
+        "types": [
+          "tree"
+        ],
+        "isTree": true,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::BedingungOder {"
+      },
+      {
+        "ident": "horseChestnut",
+        "deIdent": "Kastanie",
+        "name": "Kastanie",
+        "cost": 1,
+        "types": [
+          "tree"
+        ],
+        "isTree": true,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::SammlungName(&[1, 4, 9, 16, 25, 36, 49])"
+      },
+      {
+        "ident": "beech",
+        "deIdent": "Buche",
+        "name": "Buche",
+        "cost": 1,
+        "types": [
+          "tree"
+        ],
+        "isTree": true,
+        "immediate": "Effekt::KartenZiehen(1)",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::Bedingung(5, Bedingung::MinAnzNamen(4, \"Buche\"))"
+      }
+    ],
+    "alpine": [
+      {
+        "ident": "capercaillie",
+        "deIdent": "Auerhuhn",
+        "name": "Auerhuhn",
+        "cost": 1,
+        "types": [
+          "bird",
+          "alpine"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::EinsKostenlosAblegen(Pflanze)",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::ProTyp(1, Pflanze)"
+      },
+      {
+        "ident": "mountainHare",
+        "deIdent": "Schneehase",
+        "name": "Schneehase",
+        "cost": 0,
+        "types": [
+          "pawedAnimal",
+          "alpine"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::ProName(1, \"Hase\")"
+      },
+      {
+        "ident": "alpineMarmot",
+        "deIdent": "Alpenmurmeltier",
+        "name": "Alpenmurmeltier",
+        "cost": 1,
+        "types": [
+          "pawedAnimal",
+          "alpine"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::ProTypUnterschiedlich(3, Pflanze)"
+      },
+      {
+        "ident": "savisPipistrelle",
+        "deIdent": "Alpenfledermaus",
+        "name": "Alpenfledermaus",
+        "cost": 1,
+        "types": [
+          "bat",
+          "alpine"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::Bedingung("
+      },
+      {
+        "ident": "steinbock",
+        "deIdent": "Steinbock",
+        "name": "Steinbock",
+        "cost": 3,
+        "types": [
+          "clovenHoofedAnimal",
+          "alpine"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Extrazug",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::Konstant(10)"
+      },
+      {
+        "ident": "phoebusApollo",
+        "deIdent": "AlpenApollofalter",
+        "name": "Alpen-Apollofalter",
+        "cost": 0,
+        "types": [
+          "butterfly",
+          "insect",
+          "alpine"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::SammlungTypVersch("
+      },
+      {
+        "ident": "blackTrumpet",
+        "deIdent": "Herbsttrompete",
+        "name": "Herbsttrompete",
+        "cost": 2,
+        "types": [
+          "mushroom",
+          "alpine"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::BeiKarteAusspielenTyp(Alpen, Effekt::KartenZiehen(1))",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::Keiner"
+      },
+      {
+        "ident": "goldenEagle",
+        "deIdent": "Steinadler",
+        "name": "Steinadler",
+        "cost": 1,
+        "types": [
+          "bird",
+          "alpine"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::ProTypen(1, &[Pfotentier, Amphibie])"
+      },
+      {
+        "ident": "commonRaven",
+        "deIdent": "Kolkrabe",
+        "name": "Kolkrabe",
+        "cost": 1,
+        "types": [
+          "bird",
+          "alpine"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::KartenZiehen(1)",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::Konstant(5)"
+      },
+      {
+        "ident": "Blueberry",
+        "deIdent": "Heidelbeere",
+        "name": "Heidelbeere",
+        "cost": 1,
+        "types": [
+          "plant",
+          "alpine"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::EinsKostenlosAblegen(Amphibie)",
+        "points": "Punkteffekt::ProTypUnterschiedlich(2, Vogel)"
+      },
+      {
+        "ident": "beardedVulture",
+        "deIdent": "Bartgeier",
+        "name": "Bartgeier",
+        "cost": 1,
+        "types": [
+          "bird",
+          "alpine"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::LichtungHöhle(2)",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::ProKarteInHöhle(1)"
+      },
+      {
+        "ident": "alpineNewt",
+        "deIdent": "Bergmolch",
+        "name": "Bergmolch",
+        "cost": 1,
+        "types": [
+          "amphibian",
+          "alpine"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::EinsKostenlosAblegen2x(Alpen, Insekt)",
+        "points": "Punkteffekt::ProTyp(2, Insekt)"
+      },
+      {
+        "ident": "Gentian",
+        "deIdent": "Enzian",
+        "name": "Enzian",
+        "cost": 0,
+        "types": [
+          "plant",
+          "alpine"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::EinsKostenlosAblegen(Schmetterling)",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::ProTyp(3, Schmetterling)"
+      },
+      {
+        "ident": "stonePine",
+        "deIdent": "Zirbelkiefer",
+        "name": "Zirbelkiefer",
+        "cost": 2,
+        "types": [
+          "tree",
+          "alpine"
+        ],
+        "isTree": true,
+        "immediate": "Effekt::KartenZiehen(1)",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::KartenZiehen(1)",
+        "points": "Punkteffekt::ProTyp(1, Alpen)"
+      }
+    ],
+    "woodland": [
+      {
+        "ident": "europeanBison",
+        "deIdent": "Wisent",
+        "name": "Wisent",
+        "cost": 3,
+        "types": [
+          "clovenHoofedAnimal",
+          "Waldrand"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Extrazug",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::ProBaumsymbole("
+      },
+      {
+        "ident": "wildBoarFemale",
+        "deIdent": "Bache",
+        "name": "Bache",
+        "cost": 2,
+        "types": [
+          "clovenHoofedAnimal",
+          "Waldrand"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::LichtungLeeren",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::EinsKostenlosAblegenName(\"Frischling\")",
+        "points": "Punkteffekt::ProName(10, \"Frischling\")"
+      },
+      {
+        "ident": "beeSwarm",
+        "deIdent": "Bienenschwarm",
+        "name": "Bienenschwarm",
+        "cost": 1,
+        "types": [
+          "insect",
+          "Waldrand"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::LichtungHöhleTypen(&[Pflanze, Strauch, Baum])",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::ProTyp(1, Pflanze)"
+      },
+      {
+        "ident": "craneFly",
+        "deIdent": "Schnake",
+        "name": "Schnake",
+        "cost": 1,
+        "types": [
+          "insect",
+          "Waldrand"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::BeliebigKostenlosAblegen(Fledermaus)",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::LichtungHandTyp(Fledermaus)",
+        "points": "Punkteffekt::ProTyp(1, Fledermaus)"
+      },
+      {
+        "ident": "europeanPolecat",
+        "deIdent": "Waldiltis",
+        "name": "Waldiltis",
+        "cost": 2,
+        "types": [
+          "pawedAnimal",
+          "Waldrand"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Extrazug",
+        "points": "Punkteffekt::Bedingung("
+      },
+      {
+        "ident": "squeeker",
+        "deIdent": "Frischling",
+        "name": "Frischling",
+        "cost": 0,
+        "types": [
+          "clovenHoofedAnimal",
+          "Waldrand"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::Konstant(1)"
+      },
+      {
+        "ident": "commonPipistrelle",
+        "deIdent": "Zwergfledermaus",
+        "name": "Zwergfledermaus",
+        "cost": 1,
+        "types": [
+          "bat",
+          "Waldrand"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::Bedingung("
+      },
+      {
+        "ident": "europeanWildcat",
+        "deIdent": "Wildkatze",
+        "name": "Wildkatze",
+        "cost": 1,
+        "types": [
+          "pawedAnimal",
+          "Waldrand"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::KartenZiehenLichtung(1)",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::ProTyp(1, Waldrand)"
+      },
+      {
+        "ident": "barnOwl",
+        "deIdent": "Schleiereule",
+        "name": "Schleiereule",
+        "cost": 2,
+        "types": [
+          "bird",
+          "Waldrand"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Bedingung(MinAnzTyp(1, Fledermaus), Effekt::Extrazug)",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::ProTyp(3, Fledermaus)"
+      },
+      {
+        "ident": "digitalis",
+        "deIdent": "Fingerhut",
+        "name": "Fingerhut",
+        "cost": 0,
+        "types": [
+          "plant",
+          "Waldrand"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::SammlungTypVersch(Pflanze, &[1, 2, 6, 10, 15])"
+      },
+      {
+        "ident": "nightingale",
+        "deIdent": "Nachtigall",
+        "name": "Nachtigall",
+        "cost": 1,
+        "types": [
+          "bird",
+          "Waldrand"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Extrazug",
+        "points": "Punkteffekt::Bedingung(5, Bedingung::Hauptpflanzentyp(&[Strauch]))"
+      },
+      {
+        "ident": "waterVole",
+        "deIdent": "Schermaus",
+        "name": "Schermaus",
+        "cost": 2,
+        "types": [
+          "pawedAnimal",
+          "Waldrand"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::BeliebigSprösslingeAusspielen",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Extrazug",
+        "points": "Punkteffekt::Keiner"
+      },
+      {
+        "ident": "stingingNettle",
+        "deIdent": "Brennessel",
+        "name": "Brennessel",
+        "cost": 0,
+        "types": [
+          "plant",
+          "Waldrand"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::Keiner",
+        "points": "Punkteffekt::ProTyp(2, Schmetterling)"
+      },
+      {
+        "ident": "eurasianMagpie",
+        "deIdent": "Elster",
+        "name": "Elster",
+        "cost": 1,
+        "types": [
+          "bird",
+          "Waldrand"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::KartenZiehenLichtung(1)",
+        "persistent": "Dauereffekt::Keiner",
+        "bonus": "Effekt::LichtungHöhle(2)",
+        "points": "Punkteffekt::Konstant(3)"
+      },
+      {
+        "ident": "blackthorn",
+        "deIdent": "Schlehdorn",
+        "name": "Schlehdorn",
+        "cost": 2,
+        "types": [
+          "Waldrand",
+          "shrub"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::BeiKarteAusspielenTyp(Schmetterling, Effekt::KartenZiehen(1))",
+        "bonus": "Effekt::EinsKostenlosAblegen(Schmetterling)",
+        "points": "Punkteffekt::Keiner"
+      },
+      {
+        "ident": "commonHazel",
+        "deIdent": "Haselnuss",
+        "name": "Haselnuss",
+        "cost": 2,
+        "types": [
+          "Waldrand",
+          "shrub"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::BeiKarteAusspielenTyp(Fledermaus, Effekt::KartenZiehen(1))",
+        "bonus": "Effekt::EinsKostenlosAblegen(Fledermaus)",
+        "points": "Punkteffekt::Keiner"
+      },
+      {
+        "ident": "elderberry",
+        "deIdent": "Holunder",
+        "name": "Holunder",
+        "cost": 2,
+        "types": [
+          "Waldrand",
+          "shrub"
+        ],
+        "isTree": false,
+        "immediate": "Effekt::Keiner",
+        "persistent": "Dauereffekt::BeiKarteAusspielenTyp(Pflanze, Effekt::KartenZiehen(1))",
+        "bonus": "Effekt::EinsKostenlosAblegen(Pflanze)",
+        "points": "Punkteffekt::Keiner"
+      }
+    ]
+  },
+  "deck": [
+    {
+      "orient": "h",
+      "a": "beechMarten",
+      "aTree": "beech",
+      "b": "bechsteinsBat",
+      "bTree": "birch"
+    },
+    {
+      "orient": "h",
+      "a": "redDeer",
+      "aTree": "silverFir",
+      "b": "fallowDeer",
+      "bTree": "sycamore"
+    },
+    {
+      "orient": "h",
+      "a": "europeanHare",
+      "aTree": "oak",
+      "b": "greaterHorseshoeBat",
+      "bTree": "linden"
+    },
+    {
+      "orient": "h",
+      "a": "brownLongEaredBat",
+      "aTree": "sycamore",
+      "b": "europeanBadger",
+      "bTree": "douglasFir"
+    },
+    {
+      "orient": "h",
+      "a": "europeanHare",
+      "aTree": "birch",
+      "b": "redDeer",
+      "bTree": "horseChestnut"
+    },
+    {
+      "orient": "h",
+      "a": "wolf",
+      "aTree": "sycamore",
+      "b": "greaterHorseshoeBat",
+      "bTree": "linden"
+    },
+    {
+      "orient": "h",
+      "a": "barbastelleBat",
+      "aTree": "horseChestnut",
+      "b": "wildBoar",
+      "bTree": "oak"
+    },
+    {
+      "orient": "h",
+      "a": "roeDeerSilverFir",
+      "aTree": "silverFir",
+      "b": "lynx",
+      "bTree": "linden"
+    },
+    {
+      "orient": "h",
+      "a": "lynx",
+      "aTree": "horseChestnut",
+      "b": "redFox",
+      "bTree": "douglasFir"
+    },
+    {
+      "orient": "h",
+      "a": "barbastelleBat",
+      "aTree": "silverFir",
+      "b": "beechMarten",
+      "bTree": "horseChestnut"
+    },
+    {
+      "orient": "h",
+      "a": "lynx",
+      "aTree": "douglasFir",
+      "b": "europeanHare",
+      "bTree": "birch"
+    },
+    {
+      "orient": "h",
+      "a": "squeeker",
+      "aTree": "oak",
+      "b": "lynx",
+      "bTree": "silverFir"
+    },
+    {
+      "orient": "h",
+      "a": "fallowDeer",
+      "aTree": "linden",
+      "b": "wildBoar",
+      "bTree": "douglasFir"
+    },
+    {
+      "orient": "h",
+      "a": "europeanBadger",
+      "aTree": "horseChestnut",
+      "b": "fallowDeer",
+      "bTree": "birch"
+    },
+    {
+      "orient": "h",
+      "a": "violetCarpenterBee",
+      "aTree": "silverFir",
+      "b": "europeanHare",
+      "bTree": "sycamore"
+    },
+    {
+      "orient": "h",
+      "a": "europeanHare",
+      "aTree": "birch",
+      "b": "beechMarten",
+      "bTree": "horseChestnut"
+    },
+    {
+      "orient": "h",
+      "a": "brownLongEaredBat",
+      "aTree": "sycamore",
+      "b": "europeanHare",
+      "bTree": "linden"
+    },
+    {
+      "orient": "h",
+      "a": "wildBoar",
+      "aTree": "sycamore",
+      "b": "europeanHare",
+      "bTree": "silverFir"
+    },
+    {
+      "orient": "h",
+      "a": "wildBoar",
+      "aTree": "sycamore",
+      "b": "roeDeerHorseChestnut",
+      "bTree": "horseChestnut"
+    },
+    {
+      "orient": "h",
+      "a": "redFox",
+      "aTree": "linden",
+      "b": "violetCarpenterBee",
+      "bTree": "douglasFir"
+    },
+    {
+      "orient": "h",
+      "a": "redFox",
+      "aTree": "linden",
+      "b": "wolf",
+      "bTree": "silverFir"
+    },
+    {
+      "orient": "h",
+      "a": "fallowDeer",
+      "aTree": "linden",
+      "b": "roeDeerBirch",
+      "bTree": "birch"
+    },
+    {
+      "orient": "h",
+      "a": "violetCarpenterBee",
+      "aTree": "douglasFir",
+      "b": "lynx",
+      "bTree": "beech"
+    },
+    {
+      "orient": "h",
+      "a": "europeanHare",
+      "aTree": "silverFir",
+      "b": "redFox",
+      "bTree": "oak"
+    },
+    {
+      "orient": "h",
+      "a": "redFox",
+      "aTree": "beech",
+      "b": "squeeker",
+      "bTree": "oak"
+    },
+    {
+      "orient": "h",
+      "a": "squeeker",
+      "aTree": "horseChestnut",
+      "b": "redDeer",
+      "bTree": "oak"
+    },
+    {
+      "orient": "h",
+      "a": "europeanHare",
+      "aTree": "beech",
+      "b": "redDeer",
+      "bTree": "horseChestnut"
+    },
+    {
+      "orient": "h",
+      "a": "wildBoar",
+      "aTree": "birch",
+      "b": "beechMarten",
+      "bTree": "oak"
+    },
+    {
+      "orient": "h",
+      "a": "roeDeerLinden",
+      "aTree": "linden",
+      "b": "squeeker",
+      "bTree": "sycamore"
+    },
+    {
+      "orient": "h",
+      "a": "europeanHare",
+      "aTree": "linden",
+      "b": "europeanBadger",
+      "bTree": "douglasFir"
+    },
+    {
+      "orient": "h",
+      "a": "bechsteinsBat",
+      "aTree": "oak",
+      "b": "wolf",
+      "bTree": "silverFir"
+    },
+    {
+      "orient": "v",
+      "a": "goshawk",
+      "aTree": "silverFir",
+      "b": "woodAnt",
+      "bTree": "beech"
+    },
+    {
+      "orient": "v",
+      "a": "greatSpottedWoodpecker",
+      "aTree": "douglasFir",
+      "b": "wildStrawberries",
+      "bTree": "sycamore"
+    },
+    {
+      "orient": "v",
+      "a": "bullfinch",
+      "aTree": "silverFir",
+      "b": "treeFerns",
+      "bTree": "linden"
+    },
+    {
+      "orient": "v",
+      "a": "tawnyOwl",
+      "aTree": "birch",
+      "b": "pennyBun",
+      "bTree": "douglasFir"
+    },
+    {
+      "orient": "v",
+      "a": "tawnyOwl",
+      "aTree": "beech",
+      "b": "wildStrawberries",
+      "bTree": "sycamore"
+    },
+    {
+      "orient": "v",
+      "a": "greatSpottedWoodpecker",
+      "aTree": "linden",
+      "b": "pennyBun",
+      "bTree": "douglasFir"
+    },
+    {
+      "orient": "v",
+      "a": "goshawk",
+      "aTree": "douglasFir",
+      "b": "moss",
+      "bTree": "linden"
+    },
+    {
+      "orient": "v",
+      "a": "bullfinch",
+      "aTree": "douglasFir",
+      "b": "treeFrog",
+      "bTree": "linden"
+    },
+    {
+      "orient": "v",
+      "a": "goshawk",
+      "aTree": "silverFir",
+      "b": "hedgehog",
+      "bTree": "horseChestnut"
+    },
+    {
+      "orient": "v",
+      "a": "greatSpottedWoodpecker",
+      "aTree": "linden",
+      "b": "woodAnt",
+      "bTree": "birch"
+    },
+    {
+      "orient": "v",
+      "a": "bullfinch",
+      "aTree": "douglasFir",
+      "b": "parasolMushroom",
+      "bTree": "horseChestnut"
+    },
+    {
+      "orient": "v",
+      "a": "chaffinch",
+      "aTree": "birch",
+      "b": "woodAnt",
+      "bTree": "beech"
+    },
+    {
+      "orient": "v",
+      "a": "chaffinch",
+      "aTree": "sycamore",
+      "b": "parasolMushroom",
+      "bTree": "silverFir"
+    },
+    {
+      "orient": "v",
+      "a": "bullfinch",
+      "aTree": "douglasFir",
+      "b": "hedgehog",
+      "bTree": "beech"
+    },
+    {
+      "orient": "v",
+      "a": "purpleEmperor",
+      "aTree": "birch",
+      "b": "treeFrog",
+      "bTree": "oak"
+    },
+    {
+      "orient": "v",
+      "a": "purpleEmperor",
+      "aTree": "linden",
+      "b": "flyAgaric",
+      "bTree": "oak"
+    },
+    {
+      "orient": "v",
+      "a": "purpleEmperor",
+      "aTree": "horseChestnut",
+      "b": "moss",
+      "bTree": "douglasFir"
+    },
+    {
+      "orient": "v",
+      "a": "peacockButterfly",
+      "aTree": "silverFir",
+      "b": "hedgehog",
+      "bTree": "oak"
+    },
+    {
+      "orient": "v",
+      "a": "peacockButterfly",
+      "aTree": "oak",
+      "b": "chanterelle",
+      "bTree": "silverFir"
+    },
+    {
+      "orient": "v",
+      "a": "silverWashedFritillary",
+      "aTree": "oak",
+      "b": "blackberries",
+      "bTree": "silverFir"
+    },
+    {
+      "orient": "v",
+      "a": "silverWashedFritillary",
+      "aTree": "oak",
+      "b": "blackberries",
+      "bTree": "beech"
+    },
+    {
+      "orient": "v",
+      "a": "silverWashedFritillary",
+      "aTree": "beech",
+      "b": "moss",
+      "bTree": "linden"
+    },
+    {
+      "orient": "v",
+      "a": "silverWashedFritillary",
+      "aTree": "oak",
+      "b": "fireSalamander",
+      "bTree": "horseChestnut"
+    },
+    {
+      "orient": "v",
+      "a": "camberwellBeauty",
+      "aTree": "birch",
+      "b": "treeFrog",
+      "bTree": "oak"
+    },
+    {
+      "orient": "v",
+      "a": "camberwellBeauty",
+      "aTree": "horseChestnut",
+      "b": "chanterelle",
+      "bTree": "birch"
+    }
+  ]
+}
