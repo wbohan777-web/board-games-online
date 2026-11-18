@@ -77,8 +77,9 @@ const App = (() => {
           toast('连接断开，正在重连…');
           clearTimeout(reconnectTimer);
           reconnectTimer = setTimeout(() => {
+            const token = localStorage.getItem('token');
             connect().then(() => {
-              send({ type: 'hello', name: session.name, pid: session.pid, room: session.code });
+              send({ type: 'hello', token, pid: session.pid, room: session.code });
             }).catch(() => {});
           }, 2500);
         }
@@ -131,18 +132,15 @@ const App = (() => {
   }, 15000);
 
   // ---------- 入口：建房或加入 ----------
-  async function enter({ name, game, room, isPublic }) {
+  async function enter({ game, room, token, isPublic }) {
     closedByUser = false;
-    session.name = name;
-    saveSession();
     await connect();
     if (room) {
-      send({ type: 'hello', name, pid: session.pid, room: String(room).toUpperCase() });
+      send({ type: 'hello', token, pid: session.pid, room: String(room).toUpperCase() });
     } else {
       clearSession();
-      session.name = name;
       saveSession();
-      send({ type: 'hello', name, game, isPublic });
+      send({ type: 'hello', token, game, isPublic });
     }
   }
 

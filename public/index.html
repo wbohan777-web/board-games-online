@@ -117,15 +117,13 @@
 
   <!-- 主页：大厅 -->
   <section id="v-lobby">
-    <h1>桌游对战</h1>
-    <p class="sub">和朋友实时开一局，手机浏览器直接玩</p>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <h1>桌游对战</h1>
+      <button class="btn-ghost" id="btn-logout" style="width:auto;padding:10px 16px;font-size:14px">登出</button>
+    </div>
+    <p class="sub">欢迎，<span id="user-name">--</span></p>
 
     <div class="card" style="margin-top:14px">
-      <label>你的名字</label>
-      <input id="nm" maxlength="14" placeholder="随便起一个" autocomplete="off" enterkeyhint="go">
-    </div>
-
-    <div class="card">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
         <span style="font-weight:700;font-size:15px">🎮 公开大厅</span>
         <span class="sub" id="lobby-count">0 个房间</span>
@@ -183,6 +181,18 @@
 (() => {
   const { $, esc, toast, on, enter, inviteLink, copyText, session } = App;
 
+  // 检查登录状态
+  const token = localStorage.getItem('token');
+  const user = JSON.parse(localStorage.getItem('user') || 'null');
+  
+  if (!token || !user) {
+    location.href = '/login.html';
+    return;
+  }
+  
+  // 显示用户名
+  $('user-name').textContent = user.displayName;
+
   let lobbyRooms = [];
   let roomState = null;
 
@@ -224,9 +234,7 @@
   }
 
   async function joinRoom(code) {
-    const name = $('nm').value.trim();
-    if (!name) { toast('先填名字'); $('nm').focus(); return; }
-    await enter({ name, room: code });
+    await enter({ room: code, token });
   }
 
   // 请求大厅列表
@@ -242,6 +250,20 @@
     renderLobby();
   });
 
+  // 登出
+  $('btn-logout').onclick = async () => {
+    if (!confirm('确定要登出吗？')) return;
+    try {
+      await fetch('/api/auth/logout', {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+    } catch (e) {}
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    location.href = '/login.html';
+  };
+
   $('btn-create-main').onclick = () => showView('v-create');
   $('btn-code-join').onclick = () => {
     const code = prompt('输入房间码（4 位）：');
@@ -250,15 +272,11 @@
   $('btn-back').onclick = () => showView('v-lobby');
 
   $('btn-forest').onclick = async () => {
-    const name = $('nm').value.trim();
-    if (!name) { toast('先填名字'); $('nm').focus(); return; }
-    await enter({ name, game: 'forest', isPublic: true });
+    await enter({ game: 'forest', isPublic: true, token });
   };
 
   $('btn-photo').onclick = async () => {
-    const name = $('nm').value.trim();
-    if (!name) { toast('先填名字'); $('nm').focus(); return; }
-    await enter({ name, game: 'photo', isPublic: true });
+    await enter({ game: 'photo', isPublic: true, token });
   };
 
   // ---------- 房间视图 ----------

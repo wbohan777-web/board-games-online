@@ -24,6 +24,8 @@ const path = require('node:path');
 const crypto = require('node:crypto');
 const os = require('node:os');
 
+const auth = require('./auth.js');
+
 const PORT = Number(process.env.PORT || 8080);
 const HOST = process.env.HOST || '0.0.0.0';
 const PUBLIC_DIR = path.join(__dirname, 'public');
@@ -457,13 +459,120 @@ function serveStatic(req, res) {
 }
 
 const server = http.createServer((req, res) => {
+  // 健康检查
   if (req.url === '/healthz') {
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ ok: true, rooms: rooms.size, games: Object.keys(GAMES) }));
     return;
   }
+  
+  // API 路由
+  if (req.url.startsWith('/api/')) {
+    handleAPI(req, res);
+    return;
+  }
+  
   serveStatic(req, res);
 });
+
+// ---------- API 处理 ----------
+function handleAPI(req, res) {
+  const url = new URL(req.url, `http://${req.headers.host}`);
+  const path = url.pathname;
+  
+  // CORS 头
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  
+  if (req.method === 'OPTIONS') {
+    res.writeHead(204).end();
+    return;
+  }
+  
+  // 读取 body
+  let body = '';
+  req.on('data', chunk => { body += chunk.toString(); });
+  req.on('end', () => {
+    try {
+      const data = body ? JSON.parse(body) : {};
+      
+      // 注册
+      if (path === '/api/auth/register' && req.method === 'POST') {
+        try {
+          const user = auth.createUser({
+            username: data.username,
+            password: data.password,
+            displayName: data.displayName || data.username,
+          });
+          const token = auth.createToken(user.id);
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ 
+            ok: true, 
+            token, 
+            user: auth.sanitizeUser(user) 
+          }));
+        } catch (err) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ ok: false, error: err.message }));
+        }
+        return;
+      }
+      
+      // 登录
+      if (path === '/api/auth/login' && req.method === 'POST') {
+        const user = auth.getUserByUsername(data.username);
+        if (!user || !auth.verifyPassword(data.password, user.passwordHash)) {
+          res.writeHead(401, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ ok: false, error: '用户名或密码错误' }));
+          return;
+        }
+        user.lastLoginAt = Date.now();
+        const token = auth.createToken(user.id);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ 
+          ok: true, 
+          token, 
+          user: auth.sanitizeUser(user) 
+        }));
+        return;
+      }
+      
+      // 获取当前用户
+      if (path === '/api/auth/me' && req.method === 'GET') {
+        const authHeader = req.headers.authorization || '';
+        const token = authHeader.replace(/^Bearer\s+/, '');
+        const userId = auth.verifyToken(token);
+        if (!userId) {
+          res.writeHead(401, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ ok: false, error: '未登录' }));
+          return;
+        }
+        const user = auth.getUserById(userId);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: true, user: auth.sanitizeUser(user) }));
+        return;
+      }
+      
+      // 登出
+      if (path === '/api/auth/logout' && req.method === 'POST') {
+        const authHeader = req.headers.authorization || '';
+        const token = authHeader.replace(/^Bearer\s+/, '');
+        auth.revokeToken(token);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: true }));
+        return;
+      }
+      
+      // 404
+      res.writeHead(404, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ ok: false, error: 'Not found' }));
+    } catch (err) {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ ok: false, error: err.message }));
+    }
+  });
+}
 
 server.on('upgrade', (req, socket) => {
   const key = req.headers['sec-websocket-key'];
@@ -514,7 +623,21 @@ function handle(conn, msg) {
   }
 
   if (t === 'hello') {
-    const name = String(msg.name || '').trim().slice(0, 14) || ('玩家' + (1000 + randInt(9000)));
+    // 验证 token
+    const token = msg.token || '';
+    const userId = auth.verifyToken(token);
+    if (!userId) {
+      sendTo({ ws: conn.socket }, { type: 'error', message: '请先登录' });
+      return;
+    }
+    
+    const user = auth.getUserById(userId);
+    if (!user) {
+      sendTo({ ws: conn.socket }, { type: 'error', message: '用户不存在' });
+      return;
+    }
+    
+    const name = user.displayName;
     const wanted = String(msg.room || '').trim().toUpperCase();
     const pid = String(msg.pid || '');
 
@@ -522,12 +645,13 @@ function handle(conn, msg) {
     if (pid && wanted && rooms.has(wanted)) {
       const room = rooms.get(wanted);
       const old = room.players.get(pid);
-      if (old) {
+      if (old && old.userId === userId) {
         old.name = name;
         old.ws = conn.socket;
         old.disconnectedAt = 0;
         conn.player = old;
         conn.room = room;
+        conn.userId = userId;
         sendTo(old, { type: 'restored', you: old.id, code: room.code, game: room.game });
         pushRoom(room);
         if (room.state) pushState(room);
@@ -538,6 +662,7 @@ function handle(conn, msg) {
     const gameId = GAMES[msg.game] ? msg.game : 'forest';
     const player = {
       id: crypto.randomUUID(),
+      userId,
       name,
       colorIdx: 0,
       ws: conn.socket,
@@ -545,6 +670,7 @@ function handle(conn, msg) {
       disconnectedAt: 0,
     };
     conn.player = player;
+    conn.userId = userId;
 
     if (wanted && rooms.has(wanted)) {
       const room = rooms.get(wanted);
