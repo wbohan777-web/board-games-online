@@ -625,17 +625,24 @@ function handle(conn, msg) {
   if (t === 'hello') {
     // 验证 token
     const token = msg.token || '';
+    console.log('[hello] 收到:', { token: token ? token.slice(0, 10) + '...' : '空', game: msg.game, room: msg.room });
     const userId = auth.verifyToken(token);
+    console.log('[hello] Token验证结果:', { userId: userId || '失败' });
+    
     if (!userId) {
+      console.log('[hello] Token验证失败，拒绝连接');
       sendTo({ ws: conn.socket }, { type: 'error', message: '请先登录' });
       return;
     }
     
     const user = auth.getUserById(userId);
     if (!user) {
+      console.log('[hello] 用户不存在:', userId);
       sendTo({ ws: conn.socket }, { type: 'error', message: '用户不存在' });
       return;
     }
+    
+    console.log('[hello] 用户验证成功:', user.username);
     
     const name = user.displayName;
     const wanted = String(msg.room || '').trim().toUpperCase();

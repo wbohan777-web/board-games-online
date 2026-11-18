@@ -133,14 +133,19 @@ const App = (() => {
 
   // ---------- 入口：建房或加入 ----------
   async function enter({ game, room, token, isPublic }) {
+    console.log('[enter] 参数:', { game, room, token: token ? '存在' : '缺失', isPublic });
     closedByUser = false;
     await connect();
     if (room) {
-      send({ type: 'hello', token, pid: session.pid, room: String(room).toUpperCase() });
+      const msg = { type: 'hello', token, pid: session.pid, room: String(room).toUpperCase() };
+      console.log('[enter] 发送加入房间:', msg);
+      send(msg);
     } else {
       clearSession();
       saveSession();
-      send({ type: 'hello', token, game, isPublic });
+      const msg = { type: 'hello', token, game, isPublic };
+      console.log('[enter] 发送创建房间:', msg);
+      send(msg);
     }
   }
 
