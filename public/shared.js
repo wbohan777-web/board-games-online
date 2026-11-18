@@ -131,7 +131,7 @@ const App = (() => {
   }, 15000);
 
   // ---------- 入口：建房或加入 ----------
-  async function enter({ name, game, room }) {
+  async function enter({ name, game, room, isPublic }) {
     closedByUser = false;
     session.name = name;
     saveSession();
@@ -142,7 +142,7 @@ const App = (() => {
       clearSession();
       session.name = name;
       saveSession();
-      send({ type: 'hello', name, game });
+      send({ type: 'hello', name, game, isPublic });
     }
   }
 

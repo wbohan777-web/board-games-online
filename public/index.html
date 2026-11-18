@@ -302,13 +302,21 @@
     else prompt('复制这个链接发给朋友：', url);
   };
 
-  // 自动请求大厅（连接建立后）
+  // 自动恢复会话（刷新后重连）
   App.loadSession();
-  App.connect().then(() => {
-    requestLobby();
-    // 每 10 秒刷新一次大厅
-    setInterval(requestLobby, 10000);
-  }).catch(() => {});
+  if (session.code && session.pid) {
+    // 如果有会话，自动重连到房间
+    App.connect().then(() => {
+      App.send({ type: 'hello', name: session.name, pid: session.pid, room: session.code });
+    }).catch(() => {});
+  } else {
+    // 没有会话，请求大厅列表
+    App.connect().then(() => {
+      requestLobby();
+      // 每 10 秒刷新一次大厅
+      setInterval(requestLobby, 10000);
+    }).catch(() => {});
+  }
 
   // 如果链接带 ?room=，直接加入
   const p = new URLSearchParams(location.search);
