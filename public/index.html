@@ -304,6 +304,12 @@
 
   // 自动恢复会话（刷新后重连）
   App.loadSession();
+  
+  // 恢复名字到输入框
+  if (session.name) {
+    $('nm').value = session.name;
+  }
+  
   if (session.code && session.pid) {
     // 如果有会话，自动重连到房间
     App.connect().then(() => {
