@@ -276,7 +276,17 @@
         <span class="sub">${p.connected ? '在线' : '掉线'}</span>
       </div>`).join('');
 
-    const isHost = m.hostId === session.pid;
+    // 修复：通过 players 数组中的 isHost 判断，更可靠
+    const me = m.players.find(p => p.id === session.pid);
+    const isHost = me ? me.isHost : false;
+    
+    console.log('[DEBUG] Room state:', { 
+      myPid: session.pid, 
+      hostId: m.hostId, 
+      isHost, 
+      playerCount: m.players.length 
+    });
+    
     $('btn-start').style.display = isHost ? '' : 'none';
     $('btn-start').className = m.game === 'forest' ? 'btn-forest' : 'btn-photo';
     $('btn-start').textContent = m.game === 'forest' ? '开始森林拼图' : '开始光合作用';
