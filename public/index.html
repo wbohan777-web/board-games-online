@@ -287,6 +287,9 @@
   // ---------- 房间视图 ----------
   on('joined', m => {
     console.log('[joined] session.pid 设置为:', m.you);
+    session.pid = m.you;  // 确保 session.pid 已设置
+    session.code = m.code;
+    session.game = m.game;
     showView('v-room');
   });
   on('restored', () => showView('v-room'));
