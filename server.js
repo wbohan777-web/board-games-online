@@ -721,4 +721,45 @@ if (require.main === module) {
   });
 }
 
+// ---------- 房间自动清理 ----------
+setInterval(() => {
+  const now = Date.now();
+  const IDLE_TIMEOUT = 30 * 60 * 1000; // 30 分钟无活动
+  const EMPTY_TIMEOUT = 5 * 60 * 1000;  // 5 分钟无人
+  
+  for (const [code, room] of rooms.entries()) {
+    let shouldDelete = false;
+    let reason = '';
+    
+    // 房间已结束且超过 5 分钟
+    if (room.phase === 'finished' && (now - room.createdAt) > EMPTY_TIMEOUT) {
+      shouldDelete = true;
+      reason = '已结束';
+    }
+    
+    // 房间无人且超过 5 分钟
+    if (room.players.size === 0 && (now - room.createdAt) > EMPTY_TIMEOUT) {
+      shouldDelete = true;
+      reason = '无人';
+    }
+    
+    // 所有玩家都掉线超过 30 分钟
+    const allDisconnected = [...room.players.values()].every(p => 
+      !p.ws && p.disconnectedAt && (now - p.disconnectedAt) > IDLE_TIMEOUT
+    );
+    if (allDisconnected && room.players.size > 0) {
+      shouldDelete = true;
+      reason = '全员掉线超时';
+    }
+    
+    if (shouldDelete) {
+      console.log(`[清理] 删除房间 ${code} (${reason}, ${room.players.size}人)`);
+      rooms.delete(code);
+      if (room.isPublic) {
+        broadcastLobby();
+      }
+    }
+  }
+}, 5 * 60 * 1000); // 每5分钟执行一次
+
 module.exports = { server, rooms, GAMES, applyAction, createRoom, finishGame };
