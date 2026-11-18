@@ -302,16 +302,22 @@
       myPid: session.pid, 
       hostId: m.hostId, 
       isHost, 
+      me: me,
+      players: m.players.map(p => ({ id: p.id, isHost: p.isHost, name: p.name })),
       playerCount: m.players.length 
     });
+    console.log('[DEBUG] 按钮应该', isHost ? '显示' : '隐藏');
     
-    $('btn-start').style.display = isHost ? '' : 'none';
+    $('btn-start').style.display = isHost ? 'block' : 'none';
     $('btn-start').className = m.game === 'forest' ? 'btn-forest' : 'btn-photo';
     $('btn-start').textContent = m.game === 'forest' ? '开始森林拼图' : '开始光合作用';
     $('btn-start').disabled = m.players.length < 2;
     $('wait-hint').textContent = isHost
       ? (m.players.length < 2 ? '至少还要 1 个人' : '人都到齐就开')
       : '等房主开始';
+    
+    console.log('[DEBUG] 按钮实际 display:', $('btn-start').style.display);
+    
     showView('v-room');
   });
 
