@@ -8,72 +8,20 @@
 <style>
   /* ========== 品牌配色系统 v2.0 ========== */
   :root {
-    /* 基础背景层次 */
-    --bg-deep: #0a0f1a;
-    --bg-main: #0f1623;
-    --bg-elevated: #1a2332;
-    --surface: #162039;
-    --surface-hover: #1e2a47;
-    
-    /* 边框与分割线 */
-    --border-subtle: #1e2a42;
-    --border-normal: #2a3852;
-    --border-strong: #3d4d6e;
-    
-    /* 文字层次 */
-    --text-primary: #f0f4fb;
-    --text-secondary: #a8b5d1;
-    --text-tertiary: #7086ab;
-    --text-disabled: #4a5973;
-    
-    /* 森林主题（绿色系）*/
-    --forest-light: #d0f3e1;
-    --forest: #22c55e;
-    --forest-deep: #15803d;
-    --forest-glow: rgba(34, 197, 94, 0.25);
-    
-    /* 阳光主题（金色系）*/
-    --sun-light: #fef3c7;
-    --sun: #f59e0b;
-    --sun-deep: #b45309;
-    --sun-glow: rgba(245, 158, 11, 0.25);
-    
-    /* 功能色 */
-    --success: #10b981;
-    --error: #ef4444;
-    --info: #3b82f6;
-    
-    /* 阴影系统 */
-    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.15);
-    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.2);
-    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.25);
-    --shadow-xl: 0 12px 48px rgba(0, 0, 0, 0.3);
-    
-    /* 圆角系统 */
-    --radius-sm: 10px;
-    --radius-md: 14px;
-    --radius-lg: 18px;
-    --radius-xl: 24px;
-    
-    /* 动画时长 */
-    --duration-fast: 150ms;
-    --duration-base: 250ms;
-    --duration-slow: 350ms;
+    --bg-deep: #0a0f1a; --bg-main: #0f1623; --bg-elevated: #1a2332; --surface: #162039; --surface-hover: #1e2a47;
+    --border-subtle: #1e2a42; --border-normal: #2a3852; --border-strong: #3d4d6e;
+    --text-primary: #f0f4fb; --text-secondary: #a8b5d1; --text-tertiary: #7086ab; --text-disabled: #4a5973;
+    --forest-light: #d0f3e1; --forest: #22c55e; --forest-deep: #15803d; --forest-glow: rgba(34, 197, 94, 0.25);
+    --sun-light: #fef3c7; --sun: #f59e0b; --sun-deep: #b45309; --sun-glow: rgba(245, 158, 11, 0.25);
+    --success: #10b981; --error: #ef4444; --info: #3b82f6;
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.15); --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.2); --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.25); --shadow-xl: 0 12px 48px rgba(0, 0, 0, 0.3);
+    --radius-sm: 10px; --radius-md: 14px; --radius-lg: 18px; --radius-xl: 24px;
+    --duration-fast: 150ms; --duration-base: 250ms; --duration-slow: 350ms;
   }
   
-  /* ========== 全局重置与基础 ========== */
-  * {
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
-  }
-  
-  html, body {
-    height: 100%;
-    margin: 0;
-  }
-  
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; margin: 0; }
   body {
-    /* 多层渐变背景：森林雾气 + 阳光晕染 + 深邃基底 */
     background:
       radial-gradient(1200px 800px at 15% -8%, var(--forest-glow), transparent 65%),
       radial-gradient(1000px 700px at 88% 108%, var(--sun-glow), transparent 65%),
@@ -81,399 +29,133 @@
       var(--bg-main);
     color: var(--text-primary);
     font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
-    display: flex;
-    flex-direction: column;
-    min-height: 100dvh;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    display: flex; flex-direction: column; min-height: 100dvh;
+    -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
   }
   
-  /* ========== 布局容器 ========== */
-  .wrap {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    padding: 20px 16px;
-    gap: 18px;
-    max-width: 580px;
-    width: 100%;
-    margin: 0 auto;
-  }
-  
-  /* ========== 排版系统 ========== */
-  h1 {
-    font-size: 28px;
-    font-weight: 800;
-    margin: 0;
-    letter-spacing: -0.5px;
+  .wrap { flex: 1; display: flex; flex-direction: column; padding: 20px 16px; gap: 18px; max-width: 580px; width: 100%; margin: 0 auto; }
+  h1 { font-size: 28px; font-weight: 800; margin: 0; letter-spacing: -0.5px;
     background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .sub { color: var(--text-secondary); font-size: 14px; margin: 0; line-height: 1.5; }
+  label { display: block; font-size: 13px; font-weight: 600; color: var(--text-secondary); margin: 0 0 8px; letter-spacing: 0.3px; text-transform: uppercase; }
+  
+  .card { background: var(--bg-elevated); border: 1px solid var(--border-normal); border-radius: var(--radius-lg); padding: 20px;
+    box-shadow: var(--shadow-md); backdrop-filter: blur(10px); transition: all var(--duration-base);
+  }
+  .card:hover { border-color: var(--border-strong); box-shadow: var(--shadow-lg); }
+  
+  input { width: 100%; padding: 14px 16px; border-radius: var(--radius-md); border: 1.5px solid var(--border-normal);
+    background: var(--surface); color: var(--text-primary); font-size: 16px; outline: none; transition: all var(--duration-base);
+  }
+  input::placeholder { color: var(--text-tertiary); }
+  input:hover { border-color: var(--border-strong); }
+  input:focus { border-color: var(--forest); background: var(--bg-elevated); box-shadow: 0 0 0 3px var(--forest-glow); }
+  
+  button { width: 100%; padding: 15px 20px; border-radius: var(--radius-md); border: 0; font-size: 16px; font-weight: 700; cursor: pointer;
+    transition: all var(--duration-base); position: relative; overflow: hidden;
+  }
+  button::before { content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent); opacity: 0; transition: opacity var(--duration-base);
+  }
+  button:hover::before { opacity: 1; }
+  button:active { transform: scale(0.98); }
+  button:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; }
+  
+  .btn-forest { background: linear-gradient(135deg, var(--forest), var(--forest-deep)); color: #04140a; box-shadow: 0 4px 14px rgba(34, 197, 94, 0.3); }
+  .btn-forest:hover { box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4); transform: translateY(-1px); }
+  .btn-photo { background: linear-gradient(135deg, var(--sun), var(--sun-deep)); color: #1a0e00; box-shadow: 0 4px 14px rgba(245, 158, 11, 0.3); }
+  .btn-photo:hover { box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4); transform: translateY(-1px); }
+  .btn-ghost { background: var(--surface); border: 1.5px solid var(--border-normal); color: var(--text-primary); }
+  .btn-ghost:hover { background: var(--surface-hover); border-color: var(--border-strong); }
+  
+  /* ========== 大厅房间卡片 ========== */
+  .lobby-card { background: var(--surface); border: 2px solid var(--border-normal); border-radius: var(--radius-md); padding: 14px;
+    margin-bottom: 12px; transition: all var(--duration-base); cursor: pointer;
+  }
+  .lobby-card:hover { border-color: var(--border-strong); transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+  .lobby-card.forest { border-left: 4px solid var(--forest); }
+  .lobby-card.photo { border-left: 4px solid var(--sun); }
+  .lobby-game { font-weight: 800; font-size: 16px; margin-bottom: 6px; }
+  .lobby-game.forest { color: var(--forest); }
+  .lobby-game.photo { color: var(--sun); }
+  .lobby-host { font-size: 14px; color: var(--text-secondary); margin-bottom: 4px; }
+  .lobby-status { font-size: 13px; color: var(--text-tertiary); margin-bottom: 10px; }
+  .lobby-card button { margin-top: 8px; padding: 10px 14px; font-size: 14px; }
+  .lobby-empty { text-align: center; padding: 40px 20px; color: var(--text-tertiary); }
+  
+  .code { font-family: ui-monospace, "SF Mono", Menlo, Monaco, "Cascadia Code", monospace; font-size: 42px; letter-spacing: 12px; font-weight: 900;
+    background: linear-gradient(135deg, #7dd3fc, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    text-align: center; text-shadow: 0 0 24px rgba(59, 130, 246, 0.3);
   }
   
-  .sub {
-    color: var(--text-secondary);
-    font-size: 14px;
-    margin: 0;
-    line-height: 1.5;
-  }
+  .plist { display: flex; flex-direction: column; gap: 0; }
+  .prow { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border-subtle); transition: background var(--duration-fast); }
+  .prow:last-child { border-bottom: 0; }
+  .prow:hover { background: var(--surface); margin: 0 -8px; padding-left: 8px; padding-right: 8px; border-radius: var(--radius-sm); }
+  .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 10px; vertical-align: -1px; box-shadow: 0 0 8px currentColor; }
+  .badge { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 99px; background: var(--surface); border: 1px solid var(--border-normal); letter-spacing: 0.3px; }
   
-  label {
-    display: block;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-secondary);
-    margin: 0 0 8px;
-    letter-spacing: 0.3px;
-    text-transform: uppercase;
+  .toast { position: fixed; left: 50%; bottom: 32px; transform: translateX(-50%) translateY(16px); background: var(--bg-elevated);
+    border: 1px solid var(--border-strong); padding: 12px 22px; border-radius: var(--radius-md); font-size: 14px; opacity: 0;
+    pointer-events: none; transition: all var(--duration-base); z-index: 999; max-width: 88vw; text-align: center;
+    box-shadow: var(--shadow-xl); backdrop-filter: blur(12px);
   }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
   
-  /* ========== 卡片系统 ========== */
-  .card {
-    background: var(--bg-elevated);
-    border: 1px solid var(--border-normal);
-    border-radius: var(--radius-lg);
-    padding: 20px;
-    box-shadow: var(--shadow-md);
-    backdrop-filter: blur(10px);
-    transition: all var(--duration-base);
-  }
+  .row { display: flex; gap: 12px; }
+  .row > * { flex: 1; }
+  .hide { display: none !important; }
   
-  .card:hover {
-    border-color: var(--border-strong);
-    box-shadow: var(--shadow-lg);
-  }
-  
-  /* ========== 输入框 ========== */
-  input {
-    width: 100%;
-    padding: 14px 16px;
-    border-radius: var(--radius-md);
-    border: 1.5px solid var(--border-normal);
-    background: var(--surface);
-    color: var(--text-primary);
-    font-size: 16px;
-    outline: none;
-    transition: all var(--duration-base);
-  }
-  
-  input::placeholder {
-    color: var(--text-tertiary);
-  }
-  
-  input:hover {
-    border-color: var(--border-strong);
-  }
-  
-  input:focus {
-    border-color: var(--forest);
-    background: var(--bg-elevated);
-    box-shadow: 0 0 0 3px var(--forest-glow);
-  }
-  
-  /* ========== 按钮系统 ========== */
-  button {
-    width: 100%;
-    padding: 15px 20px;
-    border-radius: var(--radius-md);
-    border: 0;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all var(--duration-base);
-    position: relative;
-    overflow: hidden;
-  }
-  
-  button::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
-    opacity: 0;
-    transition: opacity var(--duration-base);
-  }
-  
-  button:hover::before {
-    opacity: 1;
-  }
-  
-  button:active {
-    transform: scale(0.98);
-  }
-  
-  button:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-    transform: none !important;
-  }
-  
-  .btn-forest {
-    background: linear-gradient(135deg, var(--forest), var(--forest-deep));
-    color: #04140a;
-    box-shadow: 0 4px 14px rgba(34, 197, 94, 0.3);
-  }
-  
-  .btn-forest:hover {
-    box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
-    transform: translateY(-1px);
-  }
-  
-  .btn-photo {
-    background: linear-gradient(135deg, var(--sun), var(--sun-deep));
-    color: #1a0e00;
-    box-shadow: 0 4px 14px rgba(245, 158, 11, 0.3);
-  }
-  
-  .btn-photo:hover {
-    box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
-    transform: translateY(-1px);
-  }
-  
-  .btn-ghost {
-    background: var(--surface);
-    border: 1.5px solid var(--border-normal);
-    color: var(--text-primary);
-  }
-  
-  .btn-ghost:hover {
-    background: var(--surface-hover);
-    border-color: var(--border-strong);
-  }
-  
-  /* ========== 游戏选择卡片 ========== */
-  .game-pick {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-  
-  .game-tile {
-    border: 2px solid var(--border-normal);
-    border-radius: var(--radius-md);
-    padding: 16px 12px;
-    cursor: pointer;
-    text-align: center;
-    transition: all var(--duration-base);
-    background: var(--surface);
-    position: relative;
-  }
-  
-  .game-tile::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: var(--radius-md);
-    background: linear-gradient(135deg, transparent, rgba(255,255,255,0.05));
-    opacity: 0;
-    transition: opacity var(--duration-base);
-  }
-  
-  .game-tile:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-  }
-  
-  .game-tile:hover::before {
-    opacity: 1;
-  }
-  
-  .game-tile.sel.is-forest {
-    border-color: var(--forest);
-    background: linear-gradient(135deg, var(--forest-glow), transparent);
-    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.15);
-  }
-  
-  .game-tile.sel.is-photo {
-    border-color: var(--sun);
-    background: linear-gradient(135deg, var(--sun-glow), transparent);
-    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
-  }
-  
-  .game-tile .t {
-    font-weight: 800;
-    font-size: 16px;
-    margin-bottom: 6px;
-    letter-spacing: -0.3px;
-  }
-  
-  .game-tile .d {
-    font-size: 12px;
-    color: var(--text-tertiary);
-    line-height: 1.5;
-  }
-  
-  /* ========== 房间码显示 ========== */
-  .code {
-    font-family: ui-monospace, "SF Mono", Menlo, Monaco, "Cascadia Code", monospace;
-    font-size: 42px;
-    letter-spacing: 12px;
-    font-weight: 900;
-    background: linear-gradient(135deg, #7dd3fc, #3b82f6);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-align: center;
-    text-shadow: 0 0 24px rgba(59, 130, 246, 0.3);
-  }
-  
-  /* ========== 玩家列表 ========== */
-  .plist {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-  
-  .prow {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 0;
-    border-bottom: 1px solid var(--border-subtle);
-    transition: background var(--duration-fast);
-  }
-  
-  .prow:last-child {
-    border-bottom: 0;
-  }
-  
-  .prow:hover {
-    background: var(--surface);
-    margin: 0 -8px;
-    padding-left: 8px;
-    padding-right: 8px;
-    border-radius: var(--radius-sm);
-  }
-  
-  .dot {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    margin-right: 10px;
-    vertical-align: -1px;
-    box-shadow: 0 0 8px currentColor;
-  }
-  
-  /* ========== 徽章 ========== */
-  .badge {
-    font-size: 11px;
-    font-weight: 600;
-    padding: 3px 10px;
-    border-radius: 99px;
-    background: var(--surface);
-    border: 1px solid var(--border-normal);
-    letter-spacing: 0.3px;
-  }
-  
-  /* ========== 提示条 ========== */
-  .toast {
-    position: fixed;
-    left: 50%;
-    bottom: 32px;
-    transform: translateX(-50%) translateY(16px);
-    background: var(--bg-elevated);
-    border: 1px solid var(--border-strong);
-    padding: 12px 22px;
-    border-radius: var(--radius-md);
-    font-size: 14px;
-    opacity: 0;
-    pointer-events: none;
-    transition: all var(--duration-base);
-    z-index: 999;
-    max-width: 88vw;
-    text-align: center;
-    box-shadow: var(--shadow-xl);
-    backdrop-filter: blur(12px);
-  }
-  
-  .toast.show {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
-  
-  /* ========== 工具类 ========== */
-  .row {
-    display: flex;
-    gap: 12px;
-  }
-  
-  .row > * {
-    flex: 1;
-  }
-  
-  .hide {
-    display: none !important;
-  }
-  
-  /* ========== 响应式优化 ========== */
-  @media (max-width: 400px) {
-    h1 {
-      font-size: 24px;
-    }
-    
-    .code {
-      font-size: 36px;
-      letter-spacing: 8px;
-    }
-    
-    .game-tile .t {
-      font-size: 15px;
-    }
-    
-    .game-tile .d {
-      font-size: 11px;
-    }
-  }
-  
-  @media (min-width: 640px) {
-    .wrap {
-      padding: 32px 24px;
-      gap: 20px;
-    }
-    
-    h1 {
-      font-size: 32px;
-    }
-    
-    .card {
-      padding: 24px;
-    }
-  }
+  @media (max-width: 400px) { h1 { font-size: 24px; } .code { font-size: 36px; letter-spacing: 8px; } }
+  @media (min-width: 640px) { .wrap { padding: 32px 24px; gap: 20px; } h1 { font-size: 32px; } .card { padding: 24px; } }
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <!-- 登录 / 选游戏 -->
-  <section id="v-home">
+  <!-- 主页：大厅 -->
+  <section id="v-lobby">
     <h1>桌游对战</h1>
     <p class="sub">和朋友实时开一局，手机浏览器直接玩</p>
 
     <div class="card" style="margin-top:14px">
       <label>你的名字</label>
       <input id="nm" maxlength="14" placeholder="随便起一个" autocomplete="off" enterkeyhint="go">
-      <div style="height:14px"></div>
-      <label>选游戏</label>
-      <div class="game-pick">
-        <div class="game-tile is-forest" id="pick-forest">
-          <div class="t">森林拼图</div>
-          <div class="d">2-5 人 · 种树招动物<br>60 分钟 · 卡牌对局</div>
-        </div>
-        <div class="game-tile is-photo" id="pick-photo">
-          <div class="t">光合作用</div>
-          <div class="d">2-4 人 · 六角森林<br>树影与阳光</div>
-        </div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+        <span style="font-weight:700;font-size:15px">🎮 公开大厅</span>
+        <span class="sub" id="lobby-count">0 个房间</span>
       </div>
-      <div style="height:14px"></div>
-      <button class="btn-forest" id="btn-create">创建房间</button>
-      <div style="height:10px"></div>
-      <div class="row">
-        <input id="rm" maxlength="6" placeholder="房间码" style="flex:1;text-transform:uppercase">
-        <button class="btn-ghost" id="btn-join" style="flex:.7">加入</button>
+      <div id="lobby-list"></div>
+    </div>
+
+    <button class="btn-forest" id="btn-create-main">+ 创建新房间</button>
+    <button class="btn-ghost" id="btn-code-join">🔒 用房间码加入</button>
+  </section>
+
+  <!-- 创建房间选项 -->
+  <section id="v-create" class="hide">
+    <h1>创建房间</h1>
+    <div class="card" style="margin-top:14px">
+      <label>选择游戏</label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <button class="btn-forest" id="btn-forest" style="padding:16px 12px">
+          <div style="font-size:18px;margin-bottom:4px">🌲</div>
+          <div style="font-size:14px">森林拼图</div>
+          <div style="font-size:11px;opacity:0.7;margin-top:4px">2-5 人</div>
+        </button>
+        <button class="btn-photo" id="btn-photo" style="padding:16px 12px">
+          <div style="font-size:18px;margin-bottom:4px">☀️</div>
+          <div style="font-size:14px">光合作用</div>
+          <div style="font-size:11px;opacity:0.7;margin-top:4px">2-4 人</div>
+        </button>
       </div>
     </div>
+    <button class="btn-ghost" id="btn-back">← 返回大厅</button>
   </section>
 
   <!-- 房间等待 -->
@@ -500,60 +182,87 @@
 (() => {
   const { $, esc, toast, on, enter, inviteLink, copyText, session } = App;
 
-  let picked = 'forest';
+  let lobbyRooms = [];
   let roomState = null;
 
-  // ---------- 选游戏 ----------
-  const tiles = { forest: $('pick-forest'), photo: $('pick-photo') };
-  function pick(g) {
-    picked = g;
-    tiles.forest.classList.toggle('sel', g === 'forest');
-    tiles.photo.classList.toggle('sel', g === 'photo');
-    $('btn-create').className = g === 'forest' ? 'btn-forest' : 'btn-photo';
-    $('btn-create').textContent = '创建' + (g === 'forest' ? '森林拼图' : '光合作用') + '房间';
+  // ---------- 大厅 ----------
+  function showView(view) {
+    ['v-lobby', 'v-create', 'v-room'].forEach(v => $(v).classList.toggle('hide', v !== view));
   }
-  tiles.forest.onclick = () => pick('forest');
-  tiles.photo.onclick = () => pick('photo');
-  pick('forest');
 
-  // ---------- 进入 ----------
-  const nameOf = () => {
-    const n = $('nm').value.trim();
-    if (!n) { toast('先填名字'); $('nm').focus(); return null; }
-    return n;
-  };
-
-  $('btn-create').onclick = async () => {
-    const name = nameOf(); if (!name) return;
-    $('btn-create').disabled = true;
-    try {
-      await enter({ name, game: picked });
-      toast('房间已创建');
-    } catch (e) {
-      toast('连不上服务器：' + e.message);
-    } finally {
-      $('btn-create').disabled = false;
+  function renderLobby() {
+    $('lobby-count').textContent = lobbyRooms.length + ' 个房间';
+    if (lobbyRooms.length === 0) {
+      $('lobby-list').innerHTML = '<div class="lobby-empty">暂无公开房间<br>创建一个开始游戏吧！</div>';
+      return;
     }
-  };
 
-  $('btn-join').onclick = async () => {
-    const name = nameOf(); if (!name) return;
-    const code = $('rm').value.trim().toUpperCase();
-    if (!code) { toast('填房间码'); return; }
+    $('lobby-list').innerHTML = lobbyRooms.map(r => {
+      const gameClass = r.game === 'forest' ? 'forest' : 'photo';
+      const gameIcon = r.game === 'forest' ? '🌲' : '☀️';
+      const statusText = r.phase === 'lobby' ? '等待中' : '游戏中 🔴';
+      const canJoin = r.phase === 'lobby' && r.playerCount < r.maxPlayers;
+      
+      return `<div class="lobby-card ${gameClass}" data-code="${r.code}">
+        <div class="lobby-game ${gameClass}">${gameIcon} ${r.gameName}</div>
+        <div class="lobby-host">房主：${esc(r.hostName)}</div>
+        <div class="lobby-status">${r.playerCount}/${r.maxPlayers} 人 · ${statusText}</div>
+        <button class="btn-${gameClass}" ${canJoin ? '' : 'disabled'}>
+          ${canJoin ? '快速加入 →' : '游戏中'}
+        </button>
+      </div>`;
+    }).join('');
+
+    // 绑定加入事件
+    [...document.querySelectorAll('.lobby-card button')].forEach(btn => {
+      const card = btn.closest('.lobby-card');
+      if (!card) return;
+      const code = card.dataset.code;
+      btn.onclick = () => joinRoom(code);
+    });
+  }
+
+  async function joinRoom(code) {
+    const name = $('nm').value.trim();
+    if (!name) { toast('先填名字'); $('nm').focus(); return; }
     await enter({ name, room: code });
-  };
+  }
 
-  $('nm').addEventListener('keydown', e => {
-    if (e.key === 'Enter') { e.preventDefault(); $('btn-create').onclick(); }
+  // 请求大厅列表
+  function requestLobby() {
+    if (App.socket && App.socket.readyState === 1) {
+      App.send({ type: 'getLobby' });
+    }
+  }
+
+  // 监听大厅更新
+  on('lobby', m => {
+    lobbyRooms = m.rooms || [];
+    renderLobby();
   });
 
-  // ---------- 房间视图 ----------
-  function show(view) {
-    ['v-home', 'v-room'].forEach(v => $(v).classList.toggle('hide', v !== view));
-  }
+  $('btn-create-main').onclick = () => showView('v-create');
+  $('btn-code-join').onclick = () => {
+    const code = prompt('输入房间码（4 位）：');
+    if (code) joinRoom(code.toUpperCase());
+  };
+  $('btn-back').onclick = () => showView('v-lobby');
 
-  on('joined', () => show('v-room'));
-  on('restored', () => show('v-room'));
+  $('btn-forest').onclick = async () => {
+    const name = $('nm').value.trim();
+    if (!name) { toast('先填名字'); $('nm').focus(); return; }
+    await enter({ name, game: 'forest', isPublic: true });
+  };
+
+  $('btn-photo').onclick = async () => {
+    const name = $('nm').value.trim();
+    if (!name) { toast('先填名字'); $('nm').focus(); return; }
+    await enter({ name, game: 'photo', isPublic: true });
+  };
+
+  // ---------- 房间视图 ----------
+  on('joined', () => showView('v-room'));
+  on('restored', () => showView('v-room'));
 
   on('room', m => {
     roomState = m;
@@ -574,12 +283,11 @@
     $('wait-hint').textContent = isHost
       ? (m.players.length < 2 ? '至少还要 1 个人' : '人都到齐就开')
       : '等房主开始';
-    show('v-room');
+    showView('v-room');
   });
 
   $('btn-start').onclick = () => App.send({ type: 'start' });
 
-  // 开局后跳转到对应游戏页（带上会话，避免重复握手）
   on('state', m => {
     const target = m.game === 'forest' ? 'forest.html' : 'photo.html';
     if (location.pathname.endsWith(target)) return;
@@ -594,24 +302,22 @@
     else prompt('复制这个链接发给朋友：', url);
   };
 
-  // 如果链接带 ?room=，自动跳到房间视图并预填
+  // 自动请求大厅（连接建立后）
+  App.loadSession();
+  App.connect().then(() => {
+    requestLobby();
+    // 每 10 秒刷新一次大厅
+    setInterval(requestLobby, 10000);
+  }).catch(() => {});
+
+  // 如果链接带 ?room=，直接加入
   const p = new URLSearchParams(location.search);
   if (p.get('room')) {
-    $('rm').value = p.get('room').toUpperCase();
-    $('btn-create').style.display = 'none';
-    const h = document.createElement('p');
-    h.className = 'sub';
-    h.style.textAlign = 'center';
-    h.textContent = '房间码 ' + p.get('room').toUpperCase() + '，填名字点加入';
-    $('v-home').querySelector('.card').appendChild(h);
-  }
-
-  // 续接会话
-  App.loadSession();
-  if (session.code && session.pid) {
-    App.connect().then(() => {
-      App.send({ type: 'hello', name: session.name, pid: session.pid, room: session.code });
-    }).catch(() => {});
+    const code = p.get('room').toUpperCase();
+    setTimeout(() => {
+      if ($('nm').value.trim()) joinRoom(code);
+      else { $('nm').focus(); toast('填名字后自动加入 ' + code); }
+    }, 500);
   }
 })();
 </script>

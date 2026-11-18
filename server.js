@@ -49,8 +49,9 @@ const roomCode = () => {
 
 // ---------- 房间 ----------
 const rooms = new Map();
+const connections = new Map(); // 管理所有 WebSocket 连接
 
-function createRoom(host, gameId, fixedCode) {
+function createRoom(host, gameId, fixedCode, isPublic = true) {
   let code = String(fixedCode || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 4);
   if (code.length < 4 || rooms.has(code)) {
     do { code = roomCode(); } while (rooms.has(code));
@@ -63,10 +64,55 @@ function createRoom(host, gameId, fixedCode) {
     phase: 'lobby',        // lobby | playing | finished
     state: null,           // 游戏引擎状态
     createdAt: Date.now(),
+    isPublic,              // 是否在公开大厅显示
   };
   room.players.set(host.id, host);
   rooms.set(code, room);
+  
+  // 如果是公开房间，广播大厅更新
+  if (isPublic) {
+    broadcastLobby();
+  }
+  
   return room;
+}
+
+// 获取公开房间列表
+function getLobbyRooms() {
+  const list = [];
+  for (const room of rooms.values()) {
+    if (room.isPublic && room.phase !== 'finished') {
+      list.push({
+        code: room.code,
+        game: room.game,
+        gameName: GAMES[room.game].name,
+        hostName: [...room.players.values()].find(p => p.id === room.hostId)?.name || '未知',
+        playerCount: room.players.size,
+        maxPlayers: GAMES[room.game].max,
+        phase: room.phase,
+        createdAt: room.createdAt,
+      });
+    }
+  }
+  // 按创建时间倒序排序（最新的在前）
+  return list.sort((a, b) => b.createdAt - a.createdAt);
+}
+
+// 向所有在大厅的客户端广播房间列表
+function broadcastLobby() {
+  const lobbyData = { type: 'lobby', rooms: getLobbyRooms() };
+  const payload = JSON.stringify(lobbyData);
+  
+  // 遍历所有连接，向没有加入房间的客户端发送
+  for (const conn of connections.values()) {
+    if (conn.ws && !conn.room) {
+      try {
+        sendFrame(conn.ws, 1, Buffer.from(payload, 'utf8'));
+      } catch (e) {
+        // 忽略发送错误
+      }
+    }
+  }
 }
 
 function playerList(room) {
@@ -429,14 +475,19 @@ server.on('upgrade', (req, socket) => {
   socket.setNoDelay(true);
 
   const st = { socket, buf: Buffer.alloc(0), frag: null };
-  const conn = { socket, room: null, player: null };
+  const conn = { socket, room: null, player: null, ws: socket };
+  const connId = crypto.randomUUID();
+  connections.set(connId, conn);
 
   const onClose = () => {
+    connections.delete(connId);
     const p = conn.player, room = conn.room;
     if (p && room && p.ws === conn.socket) {
       p.ws = null;
       p.disconnectedAt = Date.now();
       pushRoom(room);
+      // 玩家离开，广播大厅更新
+      if (room.isPublic) broadcastLobby();
     }
     try { socket.destroy(); } catch {}
   };
@@ -454,6 +505,13 @@ server.on('upgrade', (req, socket) => {
 // ---------- 消息处理 ----------
 function handle(conn, msg) {
   const t = msg && msg.type;
+
+  // 获取大厅房间列表
+  if (t === 'getLobby') {
+    const lobbyData = { type: 'lobby', rooms: getLobbyRooms() };
+    sendTo({ ws: conn.socket }, lobbyData);
+    return;
+  }
 
   if (t === 'hello') {
     const name = String(msg.name || '').trim().slice(0, 14) || ('玩家' + (1000 + randInt(9000)));
@@ -503,12 +561,15 @@ function handle(conn, msg) {
       conn.room = room;
       sendTo(player, { type: 'joined', you: player.id, code: room.code, game: room.game });
       pushRoom(room);
+      // 房间人数变化，广播大厅更新
+      if (room.isPublic) broadcastLobby();
       return;
     }
 
-    // 建房
+    // 建房（支持 isPublic 参数，默认公开）
     player.colorIdx = 0;
-    const room = createRoom(player, gameId, msg.code);
+    const isPublic = msg.isPublic !== false; // 默认 true
+    const room = createRoom(player, gameId, msg.code, isPublic);
     conn.room = room;
     sendTo(player, { type: 'joined', you: player.id, code: room.code, game: room.game });
     pushRoom(room);
@@ -553,6 +614,8 @@ function handle(conn, msg) {
     room.phase = 'playing';
     pushRoom(room);
     pushState(room);
+    // 游戏开始，房间状态变化，广播大厅更新
+    if (room.isPublic) broadcastLobby();
     return;
   }
 
