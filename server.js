@@ -62,16 +62,16 @@ function createRoom(host, gameId, fixedCode, isPublic = true) {
     code,
     game: gameId,
     hostId: host.id,
+    hostUserId: host.userId,  // 新增：用 userId 判断房主
     players: new Map(),
-    phase: 'lobby',        // lobby | playing | finished
-    state: null,           // 游戏引擎状态
+    phase: 'lobby',
+    state: null,
     createdAt: Date.now(),
-    isPublic,              // 是否在公开大厅显示
+    isPublic,
   };
   room.players.set(host.id, host);
   rooms.set(code, room);
   
-  // 如果是公开房间，广播大厅更新
   if (isPublic) {
     broadcastLobby();
   }
@@ -124,7 +124,7 @@ function playerList(room) {
     colorIdx: p.colorIdx,
     color: COLORS[p.colorIdx % COLORS.length],
     connected: !!p.ws,
-    isHost: p.id === room.hostId,
+    isHost: p.userId === room.hostUserId,  // 改用 userId 判断
   }));
 }
 
@@ -707,7 +707,7 @@ function handle(conn, msg) {
   const p = conn.player;
 
   if (t === 'start') {
-    if (p.id !== room.hostId) return;
+    if (p.userId !== room.hostUserId) return;  // 改用 userId 判断
     if (room.phase === 'playing') return;
     const n = room.players.size;
     if (n < GAMES[room.game].min) {
