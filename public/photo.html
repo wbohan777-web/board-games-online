@@ -4,53 +4,222 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#1a1205">
-<title>光合作用</title>
+<title>光合作用 · 桌游对战</title>
+<link rel="stylesheet" href="theme.css">
 <style>
-  :root{
-    --bg:#120d04; --card:#1e1708; --line:#3d3016; --text:#f7eeda; --dim:#b6a37a;
-    --sun:#fbbf24; --soil4:#facc15; --soil3:#a3e635; --soil2:#4ade80; --soil1:#22c55e;
+  /* ========== 阳光主题覆盖 ========== */
+  :root {
+    --sun-bg-deep: #0a0702;
+    --sun-bg: #120d04;
+    --sun-card: #1e1708;
+    --sun-surface: #2a2109;
+    --sun-border: #3d3016;
+    --sun-border-bright: #5a4520;
+    --sun-text: #f7eeda;
+    --sun-text-dim: #b6a37a;
+    --sun-main: #fbbf24;
+    --sun-gold: #f59e0b;
+    --sun-glow: rgba(251, 191, 36, 0.3);
+    
+    /* 土壤等级颜色 */
+    --soil-4: #facc15;
+    --soil-3: #a3e635;
+    --soil-2: #4ade80;
+    --soil-1: #22c55e;
   }
-  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
-  html,body{height:100%}
-  body{
-    margin:0;color:var(--text);
-    background:radial-gradient(1000px 700px at 70% -10%, rgba(251,191,36,.14), transparent 60%), var(--bg);
-    font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",sans-serif;
-    display:flex;flex-direction:column;min-height:100dvh;
+  
+  body {
+    background:
+      radial-gradient(1200px 800px at 70% -12%, var(--sun-glow), transparent 68%),
+      radial-gradient(900px 600px at 25% 112%, rgba(34, 197, 94, 0.12), transparent 68%),
+      var(--sun-bg);
+    color: var(--sun-text);
+    user-select: none;
   }
-  .wrap{flex:1;display:flex;flex-direction:column;padding:10px;gap:8px;max-width:720px;width:100%;margin:0 auto}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px}
-  .row{display:flex;gap:8px;align-items:center}
-  .between{justify-content:space-between}
-  .sub{color:var(--dim);font-size:12px}
-  .hide{display:none!important}
-  button{border:0;border-radius:10px;padding:10px 14px;font-size:14px;font-weight:700;cursor:pointer;background:#3d3016;color:var(--text)}
-  button:active{transform:scale(.97)}
-  button:disabled{opacity:.4}
-  .btn-main{background:linear-gradient(135deg,#fbbf24,#b45309);color:#1a0e00}
-  .btn-ghost{background:transparent;border:1px solid var(--line)}
-
-  #board{width:100%;aspect-ratio:1/1;display:block;touch-action:manipulation}
-
-  .pill{display:inline-flex;align-items:center;gap:5px;background:#2a2109;border:1px solid var(--line);border-radius:99px;padding:4px 10px;font-size:12px}
-  .plist{display:flex;flex-direction:column;gap:6px}
-  .prow{display:flex;justify-content:space-between;align-items:center;font-size:13px;padding:5px 0;border-bottom:1px solid var(--line)}
-  .prow:last-child{border-bottom:0}
-  .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:0}
-  .toast{
-    position:fixed;left:50%;bottom:20px;transform:translateX(-50%) translateY(10px);
-    background:#2a2109;border:1px solid #5a4520;padding:9px 16px;border-radius:10px;
-    font-size:13px;opacity:0;pointer-events:none;transition:.2s;z-index:99;max-width:90vw;text-align:center;
+  
+  .wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    gap: 10px;
+    max-width: 760px;
+    width: 100%;
+    margin: 0 auto;
   }
-  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-  .supply{display:flex;gap:6px;flex-wrap:wrap}
-  .sbtn{
-    flex:1;min-width:64px;border-radius:10px;padding:8px 6px;text-align:center;
-    background:#2a2109;border:1px solid var(--line);cursor:pointer;font-size:11px;
+  
+  /* ========== 卡片容器 ========== */
+  .card {
+    background: var(--sun-card);
+    border: 1px solid var(--sun-border);
+    border-radius: var(--radius-lg);
+    padding: 12px;
+    box-shadow: var(--shadow-md);
+    backdrop-filter: blur(8px);
+    transition: all var(--duration-base);
   }
-  .sbtn b{display:block;font-size:14px;color:var(--sun)}
-  .sbtn.sel{border-color:var(--sun);box-shadow:0 0 0 2px rgba(251,191,36,.25)}
-  .sbtn .st{color:var(--dim);font-size:10px}
+  
+  /* ========== 棋盘容器 ========== */
+  #board {
+    width: 100%;
+    aspect-ratio: 1/1;
+    display: block;
+    touch-action: manipulation;
+    border-radius: var(--radius-md);
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* ========== 玩家信息丸 ========== */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--sun-surface);
+    border: 1px solid var(--sun-border-bright);
+    border-radius: 99px;
+    padding: 5px 12px;
+    font-size: 12px;
+    transition: all var(--duration-fast);
+  }
+  
+  .pill:hover {
+    background: var(--sun-card);
+    border-color: var(--sun-main);
+  }
+  
+  .pill b {
+    color: var(--sun-main);
+    font-weight: 900;
+    text-shadow: 0 0 8px rgba(251, 191, 36, 0.3);
+  }
+  
+  /* ========== 个人供应板 ========== */
+  .supply {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  
+  .sbtn {
+    flex: 1;
+    min-width: 68px;
+    border-radius: var(--radius-md);
+    padding: 10px 8px;
+    text-align: center;
+    background: var(--sun-surface);
+    border: 2px solid var(--sun-border);
+    cursor: pointer;
+    font-size: 11px;
+    transition: all var(--duration-base);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .sbtn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+    opacity: 0;
+    transition: opacity var(--duration-base);
+  }
+  
+  .sbtn:hover {
+    transform: translateY(-2px);
+    background: var(--sun-card);
+    border-color: var(--sun-border-bright);
+  }
+  
+  .sbtn:hover::before {
+    opacity: 1;
+  }
+  
+  .sbtn.sel {
+    border-color: var(--sun-main);
+    background: rgba(251, 191, 36, 0.15);
+    box-shadow: 
+      0 0 0 3px rgba(251, 191, 36, 0.3),
+      0 4px 16px rgba(251, 191, 36, 0.4);
+    transform: translateY(-3px);
+  }
+  
+  .sbtn b {
+    display: block;
+    font-size: 15px;
+    font-weight: 900;
+    color: var(--sun-main);
+    margin-bottom: 4px;
+  }
+  
+  .sbtn .st {
+    color: var(--sun-text-dim);
+    font-size: 10px;
+    line-height: 1.3;
+  }
+  
+  /* ========== 太阳标签 ========== */
+  .sun-pill {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(251, 191, 36, 0.95);
+    border: 2px solid rgba(251, 191, 36, 1);
+    border-radius: 99px;
+    padding: 5px 14px;
+    font-size: 13px;
+    font-weight: 800;
+    color: #1a0e00;
+    box-shadow: 
+      0 4px 16px rgba(251, 191, 36, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(8px);
+  }
+  
+  /* ========== 按钮覆盖（阳光主题）========== */
+  .btn-main,
+  .btn-photo {
+    background: linear-gradient(135deg, var(--sun-main), var(--sun-gold));
+    color: #1a0e00;
+    box-shadow: 0 4px 14px rgba(251, 191, 36, 0.4);
+  }
+  
+  .btn-main:hover,
+  .btn-photo:hover {
+    box-shadow: 0 6px 20px rgba(251, 191, 36, 0.5);
+    transform: translateY(-1px);
+  }
+  
+  /* ========== 响应式优化 ========== */
+  @media (max-width: 400px) {
+    .sbtn {
+      min-width: 62px;
+      padding: 8px 6px;
+    }
+    
+    .sbtn b {
+      font-size: 14px;
+    }
+  }
+  
+  @media (min-width: 640px) {
+    .wrap {
+      padding: 16px;
+      gap: 12px;
+      max-width: 800px;
+    }
+    
+    .card {
+      padding: 16px;
+    }
+    
+    .sbtn {
+      min-width: 74px;
+      padding: 12px 10px;
+    }
+  }
 </style>
 </head>
 <body>
@@ -59,11 +228,11 @@
   <div class="card">
     <div class="row between">
       <div>
-        <div style="font-weight:800">光合作用</div>
+        <div style="font-weight:800;font-size:16px">光合作用</div>
         <div class="sub">第 <span id="round">0</span>/<span id="total">18</span> 回合 · 第 <span id="rev">1</span>/3 圈</div>
       </div>
       <div style="text-align:right">
-        <div style="font-weight:800;color:var(--sun)" id="mylight">0 光点</div>
+        <div style="font-weight:900;font-size:18px;color:var(--sun-main)" id="mylight">0 光点</div>
         <div class="sub" id="mytokens">标记 0 分</div>
       </div>
     </div>
@@ -73,24 +242,24 @@
 
   <div class="card" style="padding:6px;position:relative">
     <canvas id="board"></canvas>
-    <div class="pill" style="position:absolute;top:12px;right:12px">
+    <div class="sun-pill">
       <span id="sunlabel">太阳：北</span>
     </div>
   </div>
 
   <div class="card">
-    <div class="sub" style="margin-bottom:6px">我的个人板（从下往上买）</div>
+    <div class="sub" style="margin-bottom:8px;font-weight:600">我的个人板（从下往上买）</div>
     <div class="supply" id="supply"></div>
   </div>
 
   <div class="card">
-    <div class="row" style="margin-bottom:6px">
-      <span class="sub" id="selinfo">点自己的树选中，再点目标格</span>
+    <div class="row" style="margin-bottom:8px">
+      <span class="sub" id="selinfo" style="font-weight:600">点自己的树选中，再点目标格</span>
     </div>
     <div class="row">
-      <button class="btn-main" id="btn-grow" style="flex:1" disabled>长大</button>
-      <button class="btn-main" id="btn-plant" style="flex:1" disabled>种种子</button>
-      <button class="btn-main" id="btn-collect" style="flex:1" disabled>采标记(4)</button>
+      <button class="btn-photo" id="btn-grow" style="flex:1" disabled>长大</button>
+      <button class="btn-photo" id="btn-plant" style="flex:1" disabled>种种子</button>
+      <button class="btn-photo" id="btn-collect" style="flex:1" disabled>采标记(4)</button>
     </div>
     <div style="height:8px"></div>
     <div class="row">
@@ -174,65 +343,63 @@
     const gx = ox + (dir.q / dl) * w * 0.55;
     const gy = oy + (dir.r / dl) * h * 0.55;
     const grad = ctx.createLinearGradient(gx, gy, ox, oy);
-    grad.addColorStop(0, 'rgba(251,191,36,.22)');
+    grad.addColorStop(0, 'rgba(251,191,36,.28)');
     grad.addColorStop(1, 'rgba(251,191,36,0)');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, w, h);
 
     // 太阳图标
     ctx.beginPath();
-    ctx.arc(gx, gy, size * 0.55, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(251,191,36,.85)';
-    ctx.shadowColor = 'rgba(251,191,36,.9)';
-    ctx.shadowBlur = 24;
+    ctx.arc(gx, gy, size * 0.6, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(251,191,36,.95)';
+    ctx.shadowColor = 'rgba(251,191,36,.95)';
+    ctx.shadowBlur = 28;
     ctx.fill();
     ctx.shadowBlur = 0;
 
     for (const cell of st.board) {
       const c = hexCenter(cell.q, cell.r, size, ox, oy);
-      const pts = hexPoints(c.x, c.y, size * 0.96);
+      const pts = hexPoints(c.x, c.y, size * 0.92);
 
       ctx.beginPath();
       pts.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]));
       ctx.closePath();
 
-      const base = SOIL[cell.leaves] || '#22c55e';
-      ctx.fillStyle = cell.tree ? shade(base, 0.28) : shade(base, 0.13);
-      ctx.fill();
-
-      ctx.lineWidth = 1.2;
-      ctx.strokeStyle = 'rgba(255,255,255,.18)';
-      ctx.stroke();
-
-      // 叶数标记
-      if (!cell.tree) {
-        ctx.fillStyle = 'rgba(255,255,255,.35)';
-        ctx.font = `${Math.round(size * 0.42)}px sans-serif`;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(String(cell.leaves), c.x, c.y);
+      const lvl = cell.leaves || 0;
+      if (lvl > 0) {
+        const soilCol = SOIL[lvl] || '#4ade80';
+        ctx.fillStyle = soilCol;
+        ctx.globalAlpha = 0.3;
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      } else {
+        ctx.fillStyle = 'rgba(42, 33, 9, 0.4)';
+        ctx.fill();
       }
 
-      // 树
+      ctx.strokeStyle = '#3d3016';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
       if (cell.tree) {
         const owner = cell.tree.owner;
         const col = COLOR[owner % COLOR.length];
         const sz = cell.tree.size;
 
         ctx.beginPath();
-        ctx.arc(c.x, c.y, size * (0.16 + sz * 0.13), 0, Math.PI * 2);
+        ctx.arc(c.x, c.y, size * (0.18 + sz * 0.14), 0, Math.PI * 2);
         ctx.fillStyle = col;
         ctx.shadowColor = col;
-        ctx.shadowBlur = sz === 3 ? 16 : 8;
+        ctx.shadowBlur = sz === 3 ? 18 : 10;
         ctx.fill();
         ctx.shadowBlur = 0;
 
-        ctx.strokeStyle = 'rgba(255,255,255,.7)';
-        ctx.lineWidth = 1.4;
+        ctx.strokeStyle = 'rgba(255,255,255,.8)';
+        ctx.lineWidth = 1.6;
         ctx.stroke();
 
         ctx.fillStyle = '#fff';
-        ctx.font = `bold ${Math.round(size * 0.36)}px sans-serif`;
+        ctx.font = `bold ${Math.round(size * 0.38)}px sans-serif`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText(String(sz), c.x, c.y);
@@ -244,8 +411,11 @@
         pts.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]));
         ctx.closePath();
         ctx.strokeStyle = '#fbbf24';
-        ctx.lineWidth = 2.6;
+        ctx.lineWidth = 3;
+        ctx.shadowColor = '#fbbf24';
+        ctx.shadowBlur = 12;
         ctx.stroke();
+        ctx.shadowBlur = 0;
       }
     }
   }
@@ -279,7 +449,7 @@
 
     $('players').innerHTML = st.players.map(p =>
       `<span class="pill"><i class="dot" style="background:${COLOR[p.index % COLOR.length]}"></i>
-        ${esc(p.name)} · <b style="color:var(--sun)">${p.light}</b> · ${(p.tokens || []).reduce((a,b)=>a+b,0)}分
+        ${esc(p.name)} · <b>${p.light}</b> · ${(p.tokens || []).reduce((a,b)=>a+b,0)}分
         ${st.currentPlayer === p.index ? ' ⏳' : ''}
       </span>`).join('');
 
